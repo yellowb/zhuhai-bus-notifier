@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "ZhuHai Bus Notifier",
+  "version": "1.0.0",
+  "description": "珠海公交车到站提醒器",
+  "icons": {
+    "16": "images/icon.png",
+    "48": "images/icon.png",
+    "128": "images/icon.png"
+  },
+  "page_action": {
+    "default_icon": "images/icon.png",
+    "default_title": "珠海公交车到站提醒器",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+  ],
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  }
+}
