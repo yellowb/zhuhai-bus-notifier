@@ -1,4 +1,4 @@
-let extensionName = 'ZhuHai Bus Notifier';
+const extensionName = 'ZhuHai Bus Notifier';
 
 // Init logic here when extension installed.
 chrome.runtime.onInstalled.addListener(() => {
