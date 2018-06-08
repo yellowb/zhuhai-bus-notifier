@@ -5,9 +5,9 @@
   "description": "珠海公交车到站提醒器",
   "homepage_url": "https://github.com/yellowb/zhuhai-bus-notifier",
   "icons": {
-    "16": "images/icon.png",
-    "48": "images/icon.png",
-    "128": "images/icon.png"
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
   },
   "browser_action": {
     "default_icon": "images/icon.png",
