@@ -10,15 +10,17 @@
     "128": "images/icon128.png"
   },
   "browser_action": {
-    "default_icon": "images/icon.png",
+    "default_icon": "images/icon48.png",
     "default_title": "珠海公交车到站提醒器",
-    "default_popup": "popup.html"
+    "default_popup": "views/popup.html"
   },
   "permissions": [
+    "storage"
   ],
   "background": {
     "scripts": [
       "js/background.js"
-    ]
+    ],
+    "persistent": true
   }
 }
