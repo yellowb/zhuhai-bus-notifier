@@ -21,12 +21,16 @@
     "default_popup": "views/popup.html"
   },
   "permissions": [
-    "storage"
+    "http://*.zhbuswx.com/",
+    "storage",
+    "notifications",
+    "alarms"
   ],
   "background": {
     "scripts": [
       "js/background.js"
     ],
-    "persistent": true
-  }
+    "persistent": false
+  },
+  "options_page": "views/options.html"
 }
