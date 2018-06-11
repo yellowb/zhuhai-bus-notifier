@@ -20,12 +20,6 @@
     "default_title": "珠海公交车到站提醒器",
     "default_popup": "views/popup.html"
   },
-  "permissions": [
-    "http://*.zhbuswx.com/",
-    "storage",
-    "notifications",
-    "alarms"
-  ],
   "background": {
     "scripts": [
       "js/lib/async.min.js",
@@ -34,5 +28,11 @@
     ],
     "persistent": false
   },
-  "options_page": "views/options.html"
+  "options_page": "views/options.html",
+  "permissions": [
+    "http://*.zhbuswx.com/",
+    "storage",
+    "notifications",
+    "alarms"
+  ]
 }
