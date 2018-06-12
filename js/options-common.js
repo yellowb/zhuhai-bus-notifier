@@ -13,3 +13,24 @@ $('.ui.menu.vertical').on('click', '.item', function () {
         $('#' + this.id + '-panel').show().siblings('div').hide();
     }
 });
+
+function updateCountLabel(count) {
+    $('#line-mgr-count').text(count);
+    if (count > 0) {
+        $('#line-mgr-count').addClass('green');
+    }
+    else {
+        $('#line-mgr-count').removeClass('green')
+    }
+}
+
+/**
+ * Init some UI elements when open Options page.
+ */
+function initUi() {
+    chrome.storage.local.get(KEY_FOR_WATCHED_LINES, (object) => {
+        updateCountLabel(_.isEmpty(object) ? 0 : object[KEY_FOR_WATCHED_LINES].length);
+    });
+}
+
+initUi();

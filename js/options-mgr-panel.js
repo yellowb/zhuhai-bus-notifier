@@ -10,4 +10,5 @@
  */
 function clearWatchedLines(callback) {
     chrome.storage.local.clear(callback);
+    updateCountLabel(0);
 }

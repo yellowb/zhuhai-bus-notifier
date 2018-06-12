@@ -28,13 +28,12 @@ function saveWatchedLine() {
         // Save into local storage if lineNumber + fromStation is not existed.
         (existingWatchedLines, callback) => {
             console.log('Get existing watchedLines from local storage: ' + JSON.stringify(existingWatchedLines));
-            if (!_.some(existingWatchedLines, (item) => {
-                _.isEqual(key, item.key)
-            })) {
+            if (!_.some(existingWatchedLines, (item) => _.isEqual(key, item.key))) {
                 existingWatchedLines.push(constructWatchedLine(busLineName, busLineFromStation));
                 let cache = {};
                 cache[KEY_FOR_WATCHED_LINES] = existingWatchedLines;
                 chrome.storage.local.set(cache, () => {
+                    updateCountLabel(existingWatchedLines.length);
                     return callback(null);
                 });
             }
