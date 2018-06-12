@@ -1,8 +1,13 @@
+/**
+ * Js code for bus line setup panel of options page.
+ *
+ */
+
 let busLineNameField = $('#line-setting-panel-line-input');
 let busLineFromStationField = $('#line-setting-panel-from-station-input');
 
 /**
- * Save user input into watched lines
+ * Save user input into watched lines, using local storage.
  */
 function saveBusLine() {
     let busLineName = busLineNameField.val().toUpperCase();
@@ -10,8 +15,8 @@ function saveBusLine() {
     let key = busLineName + '__' + busLineFromStation;
 
     async.waterfall([
-        function (callback) {
-            chrome.storage.local.get(KEY_FOR_WATCHED_LINES, function (object) {
+        (callback) => {
+            chrome.storage.local.get(KEY_FOR_WATCHED_LINES, (object) => {
                 if (_.isEmpty(object)) {
                     return callback(null, []);
                 }
@@ -20,16 +25,16 @@ function saveBusLine() {
                 }
             });
         },
-        // Save into local storage if not existed.
-        function (existingWatchedLines, callback) {
+        // Save into local storage if lineNumber + fromStation is not existed.
+        (existingWatchedLines, callback) => {
             console.log('Get existing watchedLines from local storage: ' + JSON.stringify(existingWatchedLines));
-            if (!_.some(existingWatchedLines, function (item) {
-                return _.isEqual(key, item.key);
+            if (!_.some(existingWatchedLines, (item) => {
+                _.isEqual(key, item.key)
             })) {
                 existingWatchedLines.push(constructWatchedLine(busLineName, busLineFromStation));
                 let cache = {};
                 cache[KEY_FOR_WATCHED_LINES] = existingWatchedLines;
-                chrome.storage.local.set(cache, function () {
+                chrome.storage.local.set(cache, () => {
                     return callback(null);
                 });
             }
@@ -38,8 +43,10 @@ function saveBusLine() {
                 return callback(null);
             }
         }
-    ], function (err, result) {
-        // result now equals 'done'
+    ], (err, result) => {
+        if(err) {
+            return console.error(`App encounter error: ${err.stack}`);
+        }
     });
 }
 
