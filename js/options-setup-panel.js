@@ -3,15 +3,15 @@
  *
  */
 
-let busLineNameField = $('#line-setting-panel-line-input');
-let busLineFromStationField = $('#line-setting-panel-from-station-input');
+let busLineNameField = $('#line-setup-panel-line-input');
+let busLineFromStationField = $('#line-setup-panel-from-station-input');
 
 /**
  * Save user input into watched lines, using local storage.
  */
-function saveBusLine() {
-    let busLineName = busLineNameField.val().toUpperCase();
-    let busLineFromStation = busLineFromStationField.val();
+function saveWatchedLine() {
+    let busLineName = busLineNameField.val().trim().toUpperCase();
+    let busLineFromStation = busLineFromStationField.val().trim();
     let key = busLineName + '__' + busLineFromStation;
 
     async.waterfall([
@@ -60,4 +60,4 @@ function constructWatchedLine(lineNumber, fromStation) {
 
 
 // Init event handlers
-$('#line-setting-panel-save-btn').on('click', saveBusLine);
+$('#line-setup-panel-save-btn').on('click', saveWatchedLine);
