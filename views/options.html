@@ -68,7 +68,7 @@
             <div id="line-setting-panel-line-div">
                 <div class="ui right labeled left icon input">
                     <i class="bus icon"></i>
-                    <input id="line-setting-panel-line-input" style="width:400px" type="text" placeholder="如: K1">
+                    <input id="line-setting-panel-line-input" type="text" placeholder="如: K1">
                     <a class="ui tag label">
                         输入巴士路线
                     </a>
@@ -76,13 +76,13 @@
             </div>
 
             <!-- Input for bus line direction -->
-            <div id="line-setting-panel-direction-div">
+            <div id="line-setting-panel-from-station-div">
                 <div class="ui divider"></div>
                 <div class="ui right labeled left icon input">
                     <i class="exchange icon"></i>
-                    <input id="line-setting-panel-direction-input" style="width:400px" type="text" placeholder="">
+                    <input id="line-setting-panel-from-station-input" type="text" placeholder="">
                     <a class="ui tag label">
-                        选择路线方向
+                        选择起始站点(线路方向)
                     </a>
                 </div>
             </div>
@@ -101,6 +101,9 @@
 
 <script src="../js/lib/jquery-3.3.1.min.js"></script>
 <script src="../js/lib/semantic.min.js"></script>
+<script src="../js/lib/lodash.min.js"></script>
+<script src="../js/lib/async.min.js"></script>
+<script src="../js/lib/axios.min.js"></script>
 <script src="../js/options.js"></script>
 </body>
 </html>
