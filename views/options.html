@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<!-- Header -->
 <div class="ui segment">
     <h2 class="ui aligned center header">
         <img class="ui image" src="../images/icon48.png">
@@ -18,25 +19,78 @@
 </div>
 
 <div class="ui grid">
+    <!-- Menu on the left -->
     <div class="three wide column">
         <div class="ui vertical fluid pointing menu">
             <a class="active item">
                 线路配置
             </a>
             <a class="item">
-                Monitor
+                我的关注
+                <div class="ui label">
+                    0
+                </div>
             </a>
         </div>
     </div>
+
+    <!-- Content on the right -->
     <div class="thirteen wide stretched column">
         <div id="line-setting-panel" class="ui segment">
-            Hello
+
+            <!-- Welcome messages -->
+            <div id="line-setting-panel-welcome-message" class="ui info message">
+                <i class="close icon"></i>
+                <span>欢迎使用本插件! 请通过以下步骤配置你想关注的巴士路线信息, 插件会自动获取该巴士路线上实时的巴士状态, 并在巴士快到站时通知你.</span>
+            </div>
+
+            <!-- Success messages, default hidden -->
+            <div id="line-setting-panel-success-message" class="ui success message hidden">
+                <i class="close icon"></i>
+                <div class="header">
+                    恭喜你! 已成功进行如下操作:
+                </div>
+                <ul id="line-setting-panel-success-message-list" class="list">
+                </ul>
+            </div>
+
+            <!-- Input for bus line name -->
+            <div id="line-setting-panel-line-div">
+                <div class="ui right labeled left icon input">
+                    <i class="bus icon"></i>
+                    <input id="line-setting-panel-line-input" style="width:400px" type="text" placeholder="如: K1">
+                    <a class="ui tag label">
+                        输入巴士路线
+                    </a>
+                </div>
+            </div>
+
+            <!-- Input for bus line direction -->
+            <div id="line-setting-panel-direction-div">
+                <div class="ui divider"></div>
+                <div class="ui right labeled left icon input">
+                    <i class="exchange icon"></i>
+                    <input id="line-setting-panel-direction-input" style="width:400px" type="text" placeholder="">
+                    <a class="ui tag label">
+                        选择路线方向
+                    </a>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="ui divider"></div>
+            <div class="ui buttons">
+                <button id="line-setting-panel-save-btn" class="ui positive button">保存</button>
+                <div class="or"></div>
+                <button id="line-setting-panel-reset-btn" class="ui button">重置</button>
+            </div>
+
         </div>
     </div>
 </div>
 
-<script src="../js/options.js"></script>
 <script src="../js/lib/jquery-3.3.1.min.js"></script>
 <script src="../js/lib/semantic.min.js"></script>
+<script src="../js/options.js"></script>
 </body>
 </html>
