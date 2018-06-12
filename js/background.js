@@ -1,17 +1,19 @@
-const extensionName = 'ZhuHai Bus Notifier';
+
 
 
 /**
  * Init some data in local storage.
  */
 function initStorage() {
-    chrome.storage.local.set({'watchedLines': []});
+    let cache = {};
+    cache[KEY_FOR_WATCHED_LINES] = [];
+    chrome.storage.local.set(cache);
     console.log(`Local Storage has been initialized.`);
 }
 
 // Init logic here when extension installed.
 chrome.runtime.onInstalled.addListener(() => {
-    console.log(`${extensionName} is installed.`);
+    console.log(`${APP_NAME} is installed.`);
     // TODO
     initStorage();
 });

@@ -24,6 +24,7 @@
     "scripts": [
       "js/lib/async.min.js",
       "js/lib/lodash.min.js",
+      "js/constants.js",
       "js/background.js"
     ],
     "persistent": false

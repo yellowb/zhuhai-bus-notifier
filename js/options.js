@@ -1,6 +1,3 @@
-const KEY_FOR_WATCHED_LINES = 'watchedLines';
-const BUS_CURRENT_STATUS_URL = 'http://test.zhbuswx.com/RealTime/GetRealTime'
-
 let busLineNameField = $('#line-setting-panel-line-input');
 let busLineFromStationField = $('#line-setting-panel-from-station-input');
 
