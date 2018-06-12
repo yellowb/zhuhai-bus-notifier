@@ -44,7 +44,7 @@ function saveBusLine() {
             }
         }
     ], (err, result) => {
-        if(err) {
+        if (err) {
             return console.error(`App encounter error: ${err.stack}`);
         }
     });
@@ -59,10 +59,5 @@ function constructWatchedLine(lineNumber, fromStation) {
 }
 
 
-// For message can close
+// Init event handlers
 $('#line-setting-panel-save-btn').on('click', saveBusLine);
-
-// For message can close
-$('.close.icon').on('click', function () {
-    $(this).parent().hide();
-});
