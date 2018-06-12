@@ -16,12 +16,12 @@ function saveWatchedLine() {
 
     async.waterfall([
         (callback) => {
-            chrome.storage.local.get(KEY_FOR_WATCHED_LINES, (object) => {
-                if (_.isEmpty(object)) {
+            getAllWatchedLines((result) => {
+                if (_.isEmpty(result)) {
                     return callback(null, []);
                 }
                 else {
-                    return callback(null, object[KEY_FOR_WATCHED_LINES]);
+                    return callback(null, result);
                 }
             });
         },
@@ -30,12 +30,7 @@ function saveWatchedLine() {
             console.log('Get existing watchedLines from local storage: ' + JSON.stringify(existingWatchedLines));
             if (!_.some(existingWatchedLines, (item) => _.isEqual(key, item.key))) {
                 existingWatchedLines.push(constructWatchedLine(busLineName, busLineFromStation));
-                let cache = {};
-                cache[KEY_FOR_WATCHED_LINES] = existingWatchedLines;
-                chrome.storage.local.set(cache, () => {
-                    updateCountLabel(existingWatchedLines.length);
-                    return callback(null);
-                });
+                replaceWatchedLines(existingWatchedLines, callback);
             }
             else {
                 console.log(`Bus line ${busLineName} + ${busLineFromStation} is already in watched lines!`);
