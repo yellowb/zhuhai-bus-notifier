@@ -7,7 +7,11 @@ let busLineNumberField = null;
 let busLineFromStationField = null;
 let busLineNotifyStationField = null;
 
-// let cache = {};
+/**
+ * Cache search result (bus lines and their station list)
+ * @type {DataCache}
+ */
+let cache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
 
 /**
  * Save user input into watched lines, using local storage.
@@ -90,7 +94,10 @@ function onBusLineNumberFiledChange() {
                 }
 
             }
-
+            return Promise.resolve(12345);
+        })
+        .then(function (data) {
+            console.log(data);
         })
         .catch(function (error) {
             console.log(error);
