@@ -69,9 +69,14 @@ function onBusLineNumberFiledChange() {
     let busLineNumber = busLineNumberField.val().trim().toUpperCase();
     console.log(busLineNumber);
 
-    if(_.isEmpty(busLineNumber)) {
+    if (_.isEmpty(busLineNumber)) {
+        //TODO need to clear data in dropdown list
         return;
     }
+
+    // TODO check cache first
+
+    // TODO loading css
 
     axios.get(BUS_LINE_INFO_URL, {
         params: {
@@ -88,20 +93,29 @@ function onBusLineNumberFiledChange() {
             }
             else {
                 let lines = response.data.data;
-                if(_.isEmpty(lines)) {
+                if (_.isArray(lines) && lines.length > 0) {
                     lines = [];
-                    // TODO need more logic
+                    //TODO need to clear data in dropdown list
+                }
+                else {
+                    // TODO Pass bus line data to next Promise
                 }
 
             }
-            return Promise.resolve(12345);
+            // return Promise.resolve(12345);
         })
         .then(function (data) {
-            console.log(data);
+            // console.log(data);
+            // TODO use last Promise's line ids to get station list for all lines
+            // https://stackoverflow.com/questions/44402079/how-to-make-multiple-axios-requests-using-a-dynamic-array-of-links-in-javascript
         })
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function handleBusLineInfoData(data) {
+
 }
 
 // Init event handlers
