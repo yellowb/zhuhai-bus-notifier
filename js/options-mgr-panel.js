@@ -18,7 +18,7 @@ function labelTemplate(lineNumber, fromStation, notifyStation, toStation, key) {
   <div id="${key}" class="item">
     <a class="ui teal large label">
         <i class="bus icon"></i>
-        ${lineNumber}
+        <span class="for-click"> ${lineNumber} </span>
         <div class="detail">${fromStation} <i class="angle double right icon"></i> ${toStation}</div>
         <div class="detail"><i class="bell icon"></i>${notifyStation}</div>
         <i class="delete icon"></i>
@@ -90,11 +90,21 @@ function removeWatchedLineLabel(label) {
 $(function () {
     async.waterfall([
         (cb) => {
+            let labelsBlock = $('#line-mgr-panel-line-labels');
+
             // Add event listener for deleting lines
-            $('#line-mgr-panel-line-labels').on('click', '.delete.icon', function () {
+            labelsBlock.on('click', '.delete.icon', function () {
                 let label = $(this).parent().parent()[0];
                 removeWatchedLineLabel(label);
             });
+
+            // Add event listener for showing line detail
+            labelsBlock.on('click', '.bus, .detail, .for-click', function (e) {
+                let label = $(this).parent().parent()[0];
+                console.log(label.id);
+                //TODO need more logic to show details on the right side
+            });
+
             cb();
         }
     ], (err) => {
