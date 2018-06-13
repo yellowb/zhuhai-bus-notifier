@@ -37,6 +37,41 @@ function replaceWatchedLines(watchedLines, callback) {
     });
 }
 
+/**
+ * Remove one watched line from local storage by key
+ * @param key
+ * @param callback
+ */
+function removeWatchedLine(key, callback) {
+    async.waterfall([
+        (cb) => {
+            getAllWatchedLines((result) => {
+                if (_.isEmpty(result)) {
+                    return cb(null, []);
+                }
+                else {
+                    return cb(null, result);
+                }
+            });
+        },
+        (watchedLines, cb) => {
+            _.remove(watchedLines, function (item) {
+                return item.key === key;
+            });
+            replaceWatchedLines(watchedLines, cb);
+        }
+    ], (err) => {
+        if (err) {
+            console.error(`App encounter error: ${err.stack}`);
+        }
+        return callback(err, null);
+    });
+}
+
+/**
+ * Update the count label on the left menu to latest data.
+ * @param count
+ */
 function updateCountLabel(count) {
     $('#line-mgr-count').text(count);
     if (count > 0) {
