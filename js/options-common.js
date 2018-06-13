@@ -10,7 +10,7 @@
  */
 function clearWatchedLines(callback) {
     chrome.storage.local.clear(callback);
-    updateCountLabel(0);
+    notifyWatchedLineChanges(0);
 }
 
 /**
@@ -32,7 +32,7 @@ function replaceWatchedLines(watchedLines, callback) {
     let cache = {};
     cache[KEY_FOR_WATCHED_LINES] = watchedLines;
     chrome.storage.local.set(cache, () => {
-        updateCountLabel(watchedLines.length);
+        notifyWatchedLineChanges(watchedLines.length);
         return callback(null);
     });
 }
@@ -55,9 +55,7 @@ function removeWatchedLine(key, callback) {
             });
         },
         (watchedLines, cb) => {
-            _.remove(watchedLines, function (item) {
-                return item.key === key;
-            });
+            _.remove(watchedLines, (line) => line.key === key);
             replaceWatchedLines(watchedLines, cb);
         }
     ], (err) => {
@@ -69,10 +67,11 @@ function removeWatchedLine(key, callback) {
 }
 
 /**
- * Update the count label on the left menu to latest data.
+ * Update the UI subjected to latest data.
  * @param count
  */
-function updateCountLabel(count) {
+function notifyWatchedLineChanges(count) {
+    // Update the count label
     $('#line-mgr-count').text(count);
     if (count > 0) {
         $('#line-mgr-count').addClass('green');
@@ -80,18 +79,21 @@ function updateCountLabel(count) {
     else {
         $('#line-mgr-count').removeClass('green')
     }
+
+    // Update mgr panel labels
+    refreshWatchedLineLabels();
 }
 
 /**
  * Init some UI elements when open Options page.
  */
-(function initUi() {
+$(function () {
     chrome.storage.local.get(KEY_FOR_WATCHED_LINES, (object) => {
-        updateCountLabel(_.isEmpty(object) ? 0 : object[KEY_FOR_WATCHED_LINES].length);
+        notifyWatchedLineChanges(_.isEmpty(object) ? 0 : object[KEY_FOR_WATCHED_LINES].length);
     });
 
     // For message can be closed.
-    $('.close.icon').on('click', function () {
+    $('.message').on('click', '.close.icon', function () {
         $(this).parent().hide();
     });
 
@@ -105,4 +107,4 @@ function updateCountLabel(count) {
             $('#' + this.id + '-panel').show().siblings('div').hide();
         }
     });
-})();
+});
