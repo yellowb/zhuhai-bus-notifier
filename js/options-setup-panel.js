@@ -29,13 +29,12 @@ function saveWatchedLine() {
         },
         // Save into local storage if lineNumber + fromStation is not existed.
         (watchedLines, callback) => {
-            console.log('Get existing watchedLines from local storage: ' + JSON.stringify(watchedLines));
             if (!_.some(watchedLines, (item) => _.isEqual(key, item.key))) {
                 watchedLines.push(constructWatchedLine(busLineName, busLineFromStation, busLineNotifyStation));
                 replaceWatchedLines(watchedLines, callback);
             }
             else {
-                console.log(`Bus line ${busLineName} + ${busLineFromStation} + ${busLineNotifyStation} is already in watched lines!`);
+                console.log(`Bus line ${key} is already in watched lines!`);
                 return callback(null);
             }
         }
@@ -46,15 +45,19 @@ function saveWatchedLine() {
     });
 }
 
-function constructWatchedLine(lineNumber, fromStation, notifyStation) {
+function constructWatchedLine(lineNumber, fromStation, notifyStation, toStation, lineId) {
     return {
         'lineNumber': lineNumber,
         'fromStation': fromStation,
         'notifyStation': notifyStation,
+        'toStation': toStation,
+        'lineId': lineId,
         'key': lineNumber + '__' + fromStation + '__' + notifyStation
     }
 }
 
 
 // Init event handlers
-$('#line-setup-panel-save-btn').on('click', saveWatchedLine);
+$(function () {
+    $('#line-setup-panel-save-btn').on('click', saveWatchedLine);
+});
