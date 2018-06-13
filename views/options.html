@@ -77,24 +77,62 @@
             </div>
 
             <!-- Input for bus line direction -->
+            <!--<div id="line-setup-panel-from-station-div">-->
+                <!--<div class="ui divider"></div>-->
+                <!--<div class="ui right labeled left icon input">-->
+                    <!--<i class="exchange icon"></i>-->
+                    <!--<input id="line-setup-panel-from-station-input" type="text" placeholder="">-->
+                    <!--<a class="ui tag label">-->
+                        <!--选择起始站点(线路方向)-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!-- Input for bus line direction -->
             <div id="line-setup-panel-from-station-div">
                 <div class="ui divider"></div>
-                <div class="ui right labeled left icon input">
-                    <i class="exchange icon"></i>
-                    <input id="line-setup-panel-from-station-input" type="text" placeholder="">
-                    <a class="ui tag label">
+                <div class="ui right labeled">
+                    <div id="line-setup-panel-from-station-input" class="ui left icon search selection dropdown">
+                        <i class="exchange icon"></i>
+                        <input type="hidden" name="country">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">选择起始站点</div>
+                        <div class="menu">
+                            <!-- values from network -->
+                        </div>
+                    </div>
+                    <a class="ui large tag label">
                         选择起始站点(线路方向)
                     </a>
                 </div>
             </div>
 
             <!-- Input for notify station -->
+            <!--<div id="line-setup-panel-notify-station-div">-->
+                <!--<div class="ui divider"></div>-->
+                <!--<div class="ui right labeled left icon input">-->
+                    <!--<i class="bell icon"></i>-->
+                    <!--<input id="line-setup-panel-notify-station-input" type="text" placeholder="">-->
+                    <!--<a class="ui tag label">-->
+                        <!--选择提醒站点-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!-- Input for notify station -->
             <div id="line-setup-panel-notify-station-div">
                 <div class="ui divider"></div>
-                <div class="ui right labeled left icon input">
-                    <i class="bell icon"></i>
-                    <input id="line-setup-panel-notify-station-input" type="text" placeholder="">
-                    <a class="ui tag label">
+                <div class="ui right labeled">
+                    <div id="line-setup-panel-notify-station-input" class="ui left icon search selection dropdown">
+                        <i class="bell icon"></i>
+                        <input type="hidden" name="country">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">选择提醒站点</div>
+                        <div class="menu">
+                            <!-- values from network -->
+                        </div>
+                    </div>
+                    <a class="ui large tag label">
                         选择提醒站点
                     </a>
                 </div>
@@ -152,6 +190,7 @@
 <script src="../js/lib/lodash.min.js"></script>
 <script src="../js/lib/async.min.js"></script>
 <script src="../js/lib/axios.min.js"></script>
+<script src="../js/lib/moment.min.js"></script>
 
 <script src="../js/constants.js"></script>
 <script src="../js/options-common.js"></script>

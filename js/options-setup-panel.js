@@ -3,18 +3,20 @@
  *
  */
 
-let busLineNameField = $('#line-setup-panel-line-input');
-let busLineFromStationField = $('#line-setup-panel-from-station-input');
-let busLineNotifyStationField = $('#line-setup-panel-notify-station-input');
+let busLineNumberField = null;
+let busLineFromStationField = null;
+let busLineNotifyStationField = null;
+
+// let cache = {};
 
 /**
  * Save user input into watched lines, using local storage.
  */
 function saveWatchedLine() {
-    let busLineName = busLineNameField.val().trim().toUpperCase();
-    let busLineFromStation = busLineFromStationField.val().trim();
-    let busLineNotifyStation = busLineNotifyStationField.val().trim();
-    let key = busLineName + '__' + busLineFromStation + '__' + busLineNotifyStation;
+    let busLineNumber = busLineNumberField.val().trim().toUpperCase();
+    let busLineFromStation = busLineFromStationField.dropdown('get value').trim();
+    let busLineNotifyStation = busLineNotifyStationField.dropdown('get value').trim();
+    let key = busLineNumber + '__' + busLineFromStation + '__' + busLineNotifyStation;
 
     async.waterfall([
         (callback) => {
@@ -30,7 +32,7 @@ function saveWatchedLine() {
         // Save into local storage if lineNumber + fromStation is not existed.
         (watchedLines, callback) => {
             if (!_.some(watchedLines, (item) => _.isEqual(key, item.key))) {
-                watchedLines.push(constructWatchedLine(busLineName, busLineFromStation, busLineNotifyStation));
+                watchedLines.push(constructWatchedLine(busLineNumber, busLineFromStation, busLineNotifyStation));
                 replaceWatchedLines(watchedLines, callback);
             }
             else {
@@ -56,8 +58,59 @@ function constructWatchedLine(lineNumber, fromStation, notifyStation, toStation,
     }
 }
 
+/**
+ * when user input bus line number, query webservice and place data into other 2 dropdown lists
+ */
+function onBusLineNumberFiledChange() {
+    let busLineNumber = busLineNumberField.val().trim().toUpperCase();
+    console.log(busLineNumber);
+
+    if(_.isEmpty(busLineNumber)) {
+        return;
+    }
+
+    axios.get(BUS_LINE_INFO_URL, {
+        params: {
+            'handlerName': 'GetLineListByLineName',
+            'key': busLineNumber
+        }
+    })
+        .then(function (response) {
+            console.log(response.status);
+            console.log(response.data);
+
+            if (response.status !== 200) {  // network exception
+                throw new Error(`${response.status} : ${response.statusText}`);
+            }
+            else {
+                let lines = response.data.data;
+                if(_.isEmpty(lines)) {
+                    lines = [];
+                    // TODO need more logic
+                }
+
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
 
 // Init event handlers
 $(function () {
+    busLineNumberField = $('#line-setup-panel-line-input');
+    busLineFromStationField = $('#line-setup-panel-from-station-input');
+    busLineNotifyStationField = $('#line-setup-panel-notify-station-input');
+
     $('#line-setup-panel-save-btn').on('click', saveWatchedLine);
+
+    // Active dropdown lists
+    busLineFromStationField.dropdown();
+    busLineNotifyStationField.dropdown();
+
+    busLineNumberField.on('keyup', _.throttle(onBusLineNumberFiledChange, 1000));
+    busLineNumberField.on('paste', function () {
+        setTimeout(onBusLineNumberFiledChange, 0);
+    })
 });
