@@ -39,7 +39,7 @@ function replaceWatchedLines(watchedLines, callback) {
     cache[KEY_FOR_WATCHED_LINES] = watchedLines;
     chrome.storage.local.set(cache, () => {
         notifyWatchedLineChanges(watchedLines.length);
-        return callback(null);
+        return callback(null, 1);
     });
 }
 

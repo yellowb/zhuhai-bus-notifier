@@ -54,12 +54,20 @@ function saveWatchedLine() {
             }
             else {
                 console.log(`Bus line ${key} is already in watched lines!`);
-                return callback(null);
+                return callback(null, 0);
             }
         }
     ], (err, result) => {
         if (err) {
-            return console.error(`App encounter error: ${err.stack}`);
+            let errMsg = `App encounter error: ${err.stack}`;
+            showErrorMessages(errMsg);
+            return console.error(errMsg);
+        }
+        else {
+            if (_.isNumber(result)) {
+                let successMsg = result > 0 ? `你已成功添加 ${result} 条线路.` : `该线路以前已经关注过, 不需要重复添加`;
+                showSuccessMessages(`<li> ${successMsg} </li>`);
+            }
         }
     });
 }
@@ -177,7 +185,6 @@ function fillDataToBusLineNotifyStationField(stations) {
 }
 
 
-
 /**
  * When the selected value in FromStation Dropdown changes, the NotifyStation dropdown should be filled with correct data.
  * @param value
@@ -233,6 +240,17 @@ function showErrorMessages(errMsgs) {
         $('#line-setup-panel-error-message-list').empty();
         $('#line-setup-panel-error-message-list').append(errMsgs);
         $('#line-setup-panel-error-message').show();
+    }
+}
+
+function showSuccessMessages(successMsgs) {
+    if (_.isEmpty(successMsgs)) {
+        $('#line-setup-panel-error-message').hide();
+    }
+    else {
+        $('#line-setup-panel-success-message-list').empty();
+        $('#line-setup-panel-success-message-list').append(successMsgs);
+        $('#line-setup-panel-success-message').show();
     }
 }
 
