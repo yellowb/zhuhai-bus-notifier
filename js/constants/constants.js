@@ -2,6 +2,8 @@ const APP_NAME = 'ZhuHai Bus Notifier';
 
 const KEY_FOR_WATCHED_LINES = 'watchedLines';
 
+const INTERVAL_OF_CHECK_BUS = 6 * 1000;
+
 /**
  * URL to get bus real time status
  * @type {string}
