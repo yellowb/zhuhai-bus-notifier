@@ -204,6 +204,7 @@ http://test.zhbuswx.com/StationList/GetStationList?id=62cb5f6c-a3eb-40da-828f-78
 ## 每次用户键入巴士线路号时, 会调用两个webservice分别获取Bus line basic info和station list, 数据拼装之后结构如下:
 
 是一个两层的结构, 第一层是一个数组, 数组中每个元素就是一条线路的基本信息加上这条线路的所有站点, 所有站点作为第2层的数组赋值给`stations`属性.
+这个数据结构会存入Options的DataCache中, key为lineNumber, value为相应路线的这个数据结构。
 
 ```json
 [
@@ -254,6 +255,23 @@ http://test.zhbuswx.com/StationList/GetStationList?id=62cb5f6c-a3eb-40da-828f-78
         "name":"香洲"
       }
     ]
+  }
+]
+```
+
+# Local storage中的watchedLines的数据结构如下:
+
+watchedLines就是一个数组, 其中每个元素就是用户的一条关注, key属性由line#、fromStation、notifyStation组成。
+
+```json
+[  
+  {  
+    "fromStation":"城轨珠海站",
+    "key":"10__城轨珠海站__城轨珠海站",
+    "lineNumber":"10",
+    "lineUuid":"7e58c98a-89af-4293-8e01-4393ac5c9a09",
+    "notifyStation":"城轨珠海站",
+    "toStation":"下栅检查站"
   }
 ]
 ```

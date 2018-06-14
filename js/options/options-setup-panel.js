@@ -35,7 +35,7 @@ function saveWatchedLine() {
     async.waterfall([
         // Need to load all existed watched lines first.
         (callback) => {
-            getAllWatchedLines((result) => {
+            getAllWatchedLines((err, result) => {
                 if (_.isEmpty(result)) {
                     return callback(null, []);
                 }

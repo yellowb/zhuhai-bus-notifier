@@ -23,8 +23,6 @@ chrome.runtime.onInstalled.addListener(() => {
     initStorage();
 });
 
-let i = 0;
-
 // Set persistence <- true in manifest.json to ensure it keeps running in background.
 setInterval(function () {
     // TODO trigger bus real time checking

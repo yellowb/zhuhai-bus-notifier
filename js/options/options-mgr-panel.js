@@ -45,7 +45,7 @@ function generateHtmlForLabels(watchedLines) {
 function refreshWatchedLineLabels(callback) {
     async.waterfall([
         (cb) => {
-            getAllWatchedLines((result) => {
+            getAllWatchedLines((err, result) => {
                 if (_.isEmpty(result)) {
                     return cb(null, []);
                 }
