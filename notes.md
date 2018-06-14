@@ -31,12 +31,12 @@ Note: 注意同一路车有正反两个方向的线路
   "flag":1002,
   "data":[
     {
-      "Id":"62cb5f6c-a3eb-40da-828f-78f34af99b20",
+      "Id":"62cb5f6c-a3eb-40da-828f-78f34af99b20", <
       "Name":"K1",
-      "LineNumber":"K1",
+      "LineNumber":"K1", <
       "Direction":0,
-      "FromStation":"城轨珠海北站",
-      "ToStation":"拱北口岸总站",
+      "FromStation":"城轨珠海北站", <
+      "ToStation":"拱北口岸总站", <
       "BeginTime":"06:05",
       "EndTime":"21:15",
       "Price":"3",
@@ -72,8 +72,8 @@ http://test.zhbuswx.com/StationList/GetStationList?id=62cb5f6c-a3eb-40da-828f-78
   "flag":1002,
   "data":[
     {
-      "Id":"ee5dd05e933248d1bb21b2e05391c35f",
-      "Name":"城轨珠海北站",
+      "Id":"ee5dd05e933248d1bb21b2e05391c35f",  <
+      "Name":"城轨珠海北站",  <
       "Lng":"113.546275",
       "Lat":"22.405286",
       "Description":""

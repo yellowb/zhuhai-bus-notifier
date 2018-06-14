@@ -78,45 +78,12 @@ function onBusLineNumberFiledChange() {
 
     // TODO loading css
 
-    axios.get(BUS_LINE_INFO_URL, {
-        params: {
-            'handlerName': 'GetLineListByLineName',
-            'key': busLineNumber
-        }
+    fetchBusLineData(busLineNumber, function (err, result) {
+        console.log('Final result!');
+        console.log(result);
     })
-        .then(function (response) {
-            console.log(response.status);
-            console.log(response.data);
-
-            if (response.status !== 200) {  // network exception
-                throw new Error(`${response.status} : ${response.statusText}`);
-            }
-            else {
-                let lines = response.data.data;
-                if (_.isArray(lines) && lines.length > 0) {
-                    lines = [];
-                    //TODO need to clear data in dropdown list
-                }
-                else {
-                    // TODO Pass bus line data to next Promise
-                }
-
-            }
-            // return Promise.resolve(12345);
-        })
-        .then(function (data) {
-            // console.log(data);
-            // TODO use last Promise's line ids to get station list for all lines
-            // https://stackoverflow.com/questions/44402079/how-to-make-multiple-axios-requests-using-a-dynamic-array-of-links-in-javascript
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
 }
 
-function handleBusLineInfoData(data) {
-
-}
 
 // Init event handlers
 $(function () {
