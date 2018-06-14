@@ -76,7 +76,8 @@ function onBusLineNumberFiledChange() {
 
     // TODO check cache first
 
-    // TODO loading css
+    // add loading css
+    busLineNumberField.parent().addClass('loading');
 
     fetchBusLineData(busLineNumber, function (err, result) {
         console.log('Final result!');
@@ -85,8 +86,12 @@ function onBusLineNumberFiledChange() {
         // TODO save to cache
 
         // TODO fill data into dropdown list
-    })
+
+        // TODO remove loading css
+        busLineNumberField.parent().removeClass('loading');
+    });
 }
+
 
 
 // Init event handlers

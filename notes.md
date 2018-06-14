@@ -200,3 +200,61 @@ http://test.zhbuswx.com/StationList/GetStationList?id=62cb5f6c-a3eb-40da-828f-78
   ]
 }
 ```
+
+## 每次用户键入巴士线路号时, 会调用两个webservice分别获取Bus line basic info和station list, 数据拼装之后结构如下:
+
+是一个两层的结构, 第一层是一个数组, 数组中每个元素就是一条线路的基本信息加上这条线路的所有站点, 所有站点作为第2层的数组赋值给`stations`属性.
+
+```json
+[
+  {
+    "uuid":"c72cd82b-be2f-4879-a4a2-f4c05ecf54fd",
+    "lineNumber":"1路",
+    "fromStation":"香洲",
+    "toStation":"城轨珠海站",
+    "stations":[
+      {
+        "uuid":"09d3df05b61d4b57959762d9ed2f986c",
+        "name":"香洲"
+      },
+      {
+        "uuid":"986531bc5af04121a7a5bbbf27854cfb",
+        "name":"南坑"
+      },
+      {
+        "uuid":"583401abc31545abace9cd3f6c79b58c",
+        "name":"拱北"
+      },
+      {
+        "uuid":"83372752a25d4bbcbce138cfaf59bf31",
+        "name":"城轨珠海站"
+      }
+    ]
+  },
+  {
+    "uuid":"afec0bea-5532-4872-b06e-a1b5e97e4c3f",
+    "lineNumber":"1路",
+    "fromStation":"城轨珠海站",
+    "toStation":"香洲",
+    "stations":[
+      {
+        "uuid":"83372752a25d4bbcbce138cfaf59bf31",
+        "name":"城轨珠海站"
+      },
+      {
+        "uuid":"3dd7a19e5f8c44ea8b69f84f508727bb",
+        "name":"拱北口岸"
+      },
+      {
+        "uuid":"d990386ef4bc457cb2c691512acce341",
+        "name":"南坑"
+      },
+      {
+        "uuid":"759cac0a7aed47aca0e7daf21e23c44e",
+        "name":"香洲"
+      }
+    ]
+  }
+]
+```
+
