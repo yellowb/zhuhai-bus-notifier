@@ -6,7 +6,7 @@ const KEY_FOR_WATCHED_LINES = 'watchedLines';
  * Interval of checking bus real time data
  * @type {number}
  */
-const INTERVAL_OF_CHECK_BUS = 6 * 1000;
+const INTERVAL_OF_CHECK_BUS = 10 * 1000;
 
 /**
  * URL to get bus real time status

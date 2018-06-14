@@ -268,6 +268,7 @@ watchedLines就是一个数组, 其中每个元素就是用户的一条关注, k
   {  
     "fromStation":"城轨珠海站",
     "key":"10__城轨珠海站__城轨珠海站",
+    "searchKey":"10__城轨珠海站",
     "lineNumber":"10",
     "lineUuid":"7e58c98a-89af-4293-8e01-4393ac5c9a09",
     "notifyStation":"城轨珠海站",

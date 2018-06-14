@@ -79,7 +79,8 @@ function constructWatchedLine(lineNumber, fromStation, notifyStation, toStation,
         'notifyStation': notifyStation,
         'toStation': toStation,
         'lineUuid': lineUuid,
-        'key': lineNumber + '__' + fromStation + '__' + notifyStation
+        'key': lineNumber + '__' + fromStation + '__' + notifyStation,
+        'searchKey': lineNumber + '__' + fromStation    // use in real time query
     }
 }
 
