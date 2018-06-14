@@ -13,6 +13,11 @@ let busLineNotifyStationField = null;
  */
 let userQueryCache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
 
+function resetUserInput() {
+    busLineNumberField.val('');
+    busLineNumberField.trigger("keyup");
+}
+
 /**
  * Save user input into watched lines, using local storage.
  */
@@ -36,7 +41,9 @@ function saveWatchedLine() {
         // Save into local storage if lineNumber + fromStation is not existed.
         (watchedLines, callback) => {
             if (!_.some(watchedLines, (item) => _.isEqual(key, item.key))) {
-                watchedLines.push(constructWatchedLine(busLineNumber, busLineFromStation, busLineNotifyStation));
+                let lines = userQueryCache.get(busLineNumber);
+                let line = _.find(lines, {lineNumber: busLineNumber, fromStation: busLineFromStation});
+                watchedLines.push(constructWatchedLine(busLineNumber, busLineFromStation, busLineNotifyStation, line.toStation, line.uuid));
                 replaceWatchedLines(watchedLines, callback);
             }
             else {
@@ -193,7 +200,9 @@ $(function () {
     busLineFromStationField = $('#line-setup-panel-from-station-input');
     busLineNotifyStationField = $('#line-setup-panel-notify-station-input');
 
+    // Save button
     $('#line-setup-panel-save-btn').on('click', saveWatchedLine);
+    $('#line-setup-panel-reset-btn').on('click', resetUserInput);
 
     // Active dropdown lists
     busLineFromStationField.dropdown({
@@ -202,6 +211,7 @@ $(function () {
     });
     busLineNotifyStationField.dropdown();
 
+    // Input events for bus line field.
     busLineNumberField.on('keyup', _.throttle(onBusLineNumberFiledChange, 1000));
     busLineNumberField.on('paste', function () {
         setTimeout(onBusLineNumberFiledChange, 0);
