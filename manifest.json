@@ -24,8 +24,13 @@
     "scripts": [
       "js/lib/async.min.js",
       "js/lib/lodash.min.js",
+      "js/lib/axios.min.js",
+      "js/lib/moment.min.js",
       "js/constants/constants.js",
-      "js/background/background.js"
+      "js/util/bus-data-fetcher.js",
+      "js/util/data-cache.js",
+      "js/background/background-common.js",
+      "js/background/background-entry.js"
     ],
     "persistent": false
   },

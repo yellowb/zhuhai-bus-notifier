@@ -97,11 +97,10 @@ function onBusLineNumberFiledChange() {
     // check cache first
     let lines = userQueryCache.get(queryLineNumber);
     if (!_.isEmpty(lines)) {
-        console.log('Load from cache ! ' + queryLineNumber);
+        // load from cache.
         fillDataToBusLineFromStationField(lines);
     }
-    else {
-        console.log('Load from network ! ' + queryLineNumber);
+    else {  // load from network.
         // add loading css
         busLineNumberField.parent().addClass('loading');
 
