@@ -25,9 +25,15 @@ function saveWatchedLine() {
     let busLineNumber = busLineNumberField.val().trim().toUpperCase();
     let busLineFromStation = busLineFromStationField.dropdown('get value').trim();
     let busLineNotifyStation = busLineNotifyStationField.dropdown('get value').trim();
+
+    if (!validateUserInput()) {
+        return;
+    }
+
     let key = busLineNumber + '__' + busLineFromStation + '__' + busLineNotifyStation;
 
     async.waterfall([
+        // Need to load all existed watched lines first.
         (callback) => {
             getAllWatchedLines((result) => {
                 if (_.isEmpty(result)) {
@@ -135,7 +141,6 @@ function fillDataToBusLineFromStationField(lines) {
         });
         // Auto select the 1st item.
         busLineFromStationField.dropdown('set selected', [items[0].value]);
-
     }
     busLineFromStationField.dropdown('refresh');
 }
@@ -167,10 +172,11 @@ function fillDataToBusLineNotifyStationField(stations) {
         });
         // Auto select the 1st item.
         busLineNotifyStationField.dropdown('set selected', [items[0].value]);
-
     }
     busLineNotifyStationField.dropdown('refresh');
 }
+
+
 
 /**
  * When the selected value in FromStation Dropdown changes, the NotifyStation dropdown should be filled with correct data.
@@ -191,6 +197,42 @@ function onBusLineFromStationDropdownChange(value) {
     else {  // get station list from cache and fill into dropdown list.
         let line = _.find(lines, {lineNumber: queryLineNumber, fromStation: value});
         fillDataToBusLineNotifyStationField(line.stations);
+    }
+}
+
+/**
+ * Return true if user input passes validation
+ * @returns {boolean}
+ */
+function validateUserInput() {
+    let busLineNumber = busLineNumberField.val().trim().toUpperCase();
+    let busLineFromStation = busLineFromStationField.dropdown('get value').trim();
+    let busLineNotifyStation = busLineNotifyStationField.dropdown('get value').trim();
+
+    let errors = [];
+
+    if (_.isEmpty(busLineNumber)) {
+        errors.push(`<li>巴士路线不能为空</li>`);
+    }
+    if (_.isEmpty(busLineFromStation)) {
+        errors.push(`<li>起始站点不能为空</li>`);
+    }
+    if (_.isEmpty(busLineNotifyStation)) {
+        errors.push(`<li>提醒站点不能为空</li>`);
+    }
+
+    showErrorMessages(errors);
+    return errors.length === 0;
+}
+
+function showErrorMessages(errMsgs) {
+    if (_.isEmpty(errMsgs)) {
+        $('#line-setup-panel-error-message').hide();
+    }
+    else {
+        $('#line-setup-panel-error-message-list').empty();
+        $('#line-setup-panel-error-message-list').append(errMsgs);
+        $('#line-setup-panel-error-message').show();
     }
 }
 
