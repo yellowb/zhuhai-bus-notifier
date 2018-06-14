@@ -81,6 +81,10 @@ function onBusLineNumberFiledChange() {
     fetchBusLineData(busLineNumber, function (err, result) {
         console.log('Final result!');
         console.log(result);
+
+        // TODO save to cache
+
+        // TODO fill data into dropdown list
     })
 }
 
