@@ -32,7 +32,7 @@
       "js/background/background-common.js",
       "js/background/background-entry.js"
     ],
-    "persistent": false
+    "persistent": true
   },
   "options_page": "views/options.html",
   "permissions": [
