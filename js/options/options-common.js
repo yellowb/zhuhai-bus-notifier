@@ -9,8 +9,14 @@
  * @param callback
  */
 function clearWatchedLines(callback) {
-    chrome.storage.local.clear(callback);
-    notifyWatchedLineChanges(0);
+    let cache = {};
+    cache[KEY_FOR_WATCHED_LINES] = null;
+    chrome.storage.local.set(cache, () => {
+        notifyWatchedLineChanges(0);
+        if (_.isFunction(callback)) {
+            return callback(null);
+        }
+    });
 }
 
 /**
