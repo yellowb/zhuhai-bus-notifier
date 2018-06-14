@@ -5,8 +5,8 @@
  */
 function DataCache(ttl) {
     this.ttl = ttl;
-    this.dataHolder = {};
-    this.ttlHolder = {};
+    this.dataHolder = {};  // Stores key -> value mappings
+    this.ttlHolder = {};  // Stores key -> createdTime mappings
 }
 
 DataCache.prototype.put = function (key, value) {
