@@ -15,7 +15,7 @@ function checkBusRealTime() {
         // Reshape the data to k-v map, the k is line#, the v is an array contains watched lines with the same line#
         function (lines, cb) {
             // For debug
-            console.log('Latest watched lines are :' + JSON.stringify(lines));
+            // console.log('Latest watched lines are :' + JSON.stringify(lines));
 
             // TODO
 
