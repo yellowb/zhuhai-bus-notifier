@@ -11,7 +11,7 @@ let busLineNotifyStationField = null;
  * Cache search result (bus lines and their station list)
  * @type {DataCache}
  */
-let cache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
+let userQueryCache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
 
 /**
  * Save user input into watched lines, using local storage.
@@ -51,13 +51,13 @@ function saveWatchedLine() {
     });
 }
 
-function constructWatchedLine(lineNumber, fromStation, notifyStation, toStation, lineId) {
+function constructWatchedLine(lineNumber, fromStation, notifyStation, toStation, lineUuid) {
     return {
         'lineNumber': lineNumber,
         'fromStation': fromStation,
         'notifyStation': notifyStation,
         'toStation': toStation,
-        'lineId': lineId,
+        'lineUuid': lineUuid,
         'key': lineNumber + '__' + fromStation + '__' + notifyStation
     }
 }
@@ -66,33 +66,126 @@ function constructWatchedLine(lineNumber, fromStation, notifyStation, toStation,
  * when user input bus line number, query webservice and place data into other 2 dropdown lists
  */
 function onBusLineNumberFiledChange() {
-    let busLineNumber = busLineNumberField.val().trim().toUpperCase();
-    console.log(busLineNumber);
+    let queryLineNumber = busLineNumberField.val().trim().toUpperCase();
 
-    if (_.isEmpty(busLineNumber)) {
-        //TODO need to clear data in dropdown list
+    if (_.isEmpty(queryLineNumber)) {
+        fillDataToBusLineFromStationField(null);
         return;
     }
 
-    // TODO check cache first
+    // check cache first
+    let lines = userQueryCache.get(queryLineNumber);
+    if (!_.isEmpty(lines)) {
+        console.log('Load from cache ! ' + queryLineNumber);
+        fillDataToBusLineFromStationField(lines);
+    }
+    else {
+        console.log('Load from network ! ' + queryLineNumber);
+        // add loading css
+        busLineNumberField.parent().addClass('loading');
 
-    // add loading css
-    busLineNumberField.parent().addClass('loading');
+        fetchBusLineData(queryLineNumber, function (err, lines) {
 
-    fetchBusLineData(busLineNumber, function (err, result) {
-        console.log('Final result!');
-        console.log(result);
+            // put into cache
+            if (!_.isEmpty(lines)) {
+                console.log('Put into cache ! ' + queryLineNumber);
+                userQueryCache.put(queryLineNumber, lines);
+            }
 
-        // TODO save to cache
+            // fill data into 'from station' dropdown list
+            fillDataToBusLineFromStationField(lines);
 
-        // TODO fill data into dropdown list
-
-        // TODO remove loading css
-        busLineNumberField.parent().removeClass('loading');
-    });
+            // remove loading css
+            busLineNumberField.parent().removeClass('loading');
+        });
+    }
 }
 
+/**
+ * Format and fill data into FromStation dropdown list
+ * @param lines
+ */
+function fillDataToBusLineFromStationField(lines) {
+    // clear selection
+    busLineFromStationField.dropdown('clear');
 
+    // If line# not found, remove all existed items
+    if (!_.isArray(lines) || _.isEmpty(lines)) {
+        busLineFromStationField.dropdown('setup menu', {
+            values: []
+        });
+    }
+    // If line# found, replace all existed items by new ones.
+    else {
+        let items = _.map(lines, function (n) {
+            return {
+                name: n['fromStation'],
+                value: n['fromStation']
+            }
+        });
+        busLineFromStationField.dropdown('setup menu', {
+            values: items
+        });
+        // Auto select the 1st item.
+        busLineFromStationField.dropdown('set selected', [items[0].value]);
+
+    }
+    busLineFromStationField.dropdown('refresh');
+}
+
+/**
+ * Format and fill data into NotifyStation dropdown list
+ * @param stations
+ */
+function fillDataToBusLineNotifyStationField(stations) {
+    // clear selection
+    busLineNotifyStationField.dropdown('clear');
+
+    // If line# not found, remove all existed items
+    if (!_.isArray(stations) || _.isEmpty(stations)) {
+        busLineNotifyStationField.dropdown('setup menu', {
+            values: []
+        });
+    }
+    // If line# found, replace all existed items by new ones.
+    else {
+        let items = _.map(stations, function (n) {
+            return {
+                name: n['name'],
+                value: n['name']
+            }
+        });
+        busLineNotifyStationField.dropdown('setup menu', {
+            values: items
+        });
+        // Auto select the 1st item.
+        busLineNotifyStationField.dropdown('set selected', [items[0].value]);
+
+    }
+    busLineNotifyStationField.dropdown('refresh');
+}
+
+/**
+ * When the selected value in FromStation Dropdown changes, the NotifyStation dropdown should be filled with correct data.
+ * @param value
+ */
+function onBusLineFromStationDropdownChange(value) {
+    // if user input is empty or no bus line can be found
+    if (_.isEmpty(value)) {
+        fillDataToBusLineNotifyStationField(null);
+        return;
+    }
+
+    let queryLineNumber = busLineNumberField.val().trim().toUpperCase();
+    let lines = userQueryCache.get(queryLineNumber);
+    if (_.isEmpty(lines)) {  // should not go here!
+        fillDataToBusLineNotifyStationField(null);
+    }
+    else {  // get station list from cache and fill into dropdown list.
+        let line = _.find(lines, {lineNumber: queryLineNumber, fromStation: value});
+        fillDataToBusLineNotifyStationField(line.stations);
+    }
+}
 
 // Init event handlers
 $(function () {
@@ -103,7 +196,10 @@ $(function () {
     $('#line-setup-panel-save-btn').on('click', saveWatchedLine);
 
     // Active dropdown lists
-    busLineFromStationField.dropdown();
+    busLineFromStationField.dropdown({
+        forceSelection: true,
+        onChange: onBusLineFromStationDropdownChange
+    });
     busLineNotifyStationField.dropdown();
 
     busLineNumberField.on('keyup', _.throttle(onBusLineNumberFiledChange, 1000));

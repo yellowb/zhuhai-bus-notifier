@@ -209,7 +209,7 @@ http://test.zhbuswx.com/StationList/GetStationList?id=62cb5f6c-a3eb-40da-828f-78
 [
   {
     "uuid":"c72cd82b-be2f-4879-a4a2-f4c05ecf54fd",
-    "lineNumber":"1路",
+    "lineNumber":"1",
     "fromStation":"香洲",
     "toStation":"城轨珠海站",
     "stations":[
@@ -233,7 +233,7 @@ http://test.zhbuswx.com/StationList/GetStationList?id=62cb5f6c-a3eb-40da-828f-78
   },
   {
     "uuid":"afec0bea-5532-4872-b06e-a1b5e97e4c3f",
-    "lineNumber":"1路",
+    "lineNumber":"1",
     "fromStation":"城轨珠海站",
     "toStation":"香洲",
     "stations":[

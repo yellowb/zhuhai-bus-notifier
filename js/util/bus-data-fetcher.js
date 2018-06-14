@@ -9,15 +9,21 @@
  */
 const HANDLER_NAME_FETCH_BUS_LINE_INFO = 'GetLineListByLineName';
 
+const LINE_NUMBER_CHN_SUFFIX = '路';
+
 /**
  * Convert bus line info data from webservice to own format.
  * @param wsData
  */
 function convertBusLineInfoData(wsData) {
     let lines = _.map(wsData, function (n) {
+        let lineNumber = n['LineNumber'];
+        // Sometimes the response lineNumber ends with chinese char '路', need to ignore it.
+        lineNumber = lineNumber.charAt(lineNumber.length - 1) === LINE_NUMBER_CHN_SUFFIX ?
+            lineNumber.substring(0, lineNumber.length - 1) : lineNumber;
         return {
             'uuid': n['Id'],
-            'lineNumber': n['LineNumber'],
+            'lineNumber': lineNumber,
             'fromStation': n['FromStation'],
             'toStation': n['ToStation']
         }
