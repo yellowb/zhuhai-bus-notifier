@@ -277,3 +277,51 @@ watchedLines就是一个数组, 其中每个元素就是用户的一条关注, k
 ]
 ```
 
+# Background那边把watchedLines数组Reshape之后会变成如下一个k-v mapping, k为line# + fromStation:
+```json
+{
+  "12__九洲港":[
+    {
+      "fromStation":"九洲港",
+      "key":"12__九洲港__石花东",
+      "lineNumber":"12",
+      "lineUuid":"4040c9b6-9fd3-498a-87a8-78363ccc9d2b",
+      "notifyStation":"石花东",
+      "searchKey":"12__九洲港",
+      "toStation":"海虹总站"
+    }
+  ],
+  "10__城轨珠海站":[
+    {
+      "fromStation":"城轨珠海站",
+      "key":"10__城轨珠海站__华侨宾馆",
+      "lineNumber":"10",
+      "lineUuid":"7e58c98a-89af-4293-8e01-4393ac5c9a09",
+      "notifyStation":"华侨宾馆",
+      "searchKey":"10__城轨珠海站",
+      "toStation":"下栅检查站"
+    }
+  ],
+  "10__下栅检查站":[
+    {
+      "fromStation":"下栅检查站",
+      "key":"10__下栅检查站__威士茂北门",
+      "lineNumber":"10",
+      "lineUuid":"cafdc508-74f1-4053-bdec-0975c45d91fd",
+      "notifyStation":"威士茂北门",
+      "searchKey":"10__下栅检查站",
+      "toStation":"城轨珠海站"
+    },
+    {
+      "fromStation":"下栅检查站",
+      "key":"10__下栅检查站__北山村",
+      "lineNumber":"10",
+      "lineUuid":"cafdc508-74f1-4053-bdec-0975c45d91fd",
+      "notifyStation":"北山村",
+      "searchKey":"10__下栅检查站",
+      "toStation":"城轨珠海站"
+    }
+  ]
+}
+```
+

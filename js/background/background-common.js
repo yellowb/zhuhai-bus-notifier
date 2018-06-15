@@ -12,17 +12,13 @@ function checkBusRealTime() {
                 return cb(null, lines);
             });
         },
-        // Reshape the data to k-v map, the k is line#, the v is an array contains watched lines with the same line#
+        // Reshape the data to k-v map, the k is searchKey(line#__fromStation),
+        // the v is an array contains watched lines with the same searchKey. Check notes.md for sample.
         function (lines, cb) {
-            // For debug
-            // console.log('Latest watched lines are :' + JSON.stringify(lines));
-
-            // TODO
-
             let result = _.reduce(lines, function (result, value) {
-                (result[value.searchKey] || (result[value.searchKey] = [])).push(value);return result;
+                (result[value.searchKey] || (result[value.searchKey] = [])).push(value);
+                return result;
             }, {});
-
             return cb(null, result);
         },
         function (result, cb) {
