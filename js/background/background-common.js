@@ -15,14 +15,16 @@ function checkBusRealTime() {
         // Reshape the data to k-v map, the k is searchKey(line#__fromStation),
         // the v is an array contains watched lines with the same searchKey. Check notes.md for sample.
         function (lines, cb) {
-            let result = _.reduce(lines, function (result, value) {
+            let reshapedLines = _.reduce(lines, function (result, value) {
                 (result[value.searchKey] || (result[value.searchKey] = [])).push(value);
                 return result;
             }, {});
-            return cb(null, result);
+            return cb(null, {'watchLines': reshapedLines});
         },
 
         // TODO use all searchKeys to call webservice and get bus real time status
+
+
 
         // TODO fetch station list for all related line
 
@@ -59,8 +61,6 @@ function checkBusRealTime() {
         //       ]
         //    }
         // }
-
-
 
 
         function (result, cb) {
