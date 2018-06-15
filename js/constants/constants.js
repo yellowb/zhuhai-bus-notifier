@@ -25,3 +25,8 @@ const BUS_LINE_INFO_URL = 'http://test.zhbuswx.com/Handlers/BusQuery.ashx';
  * @type {string}
  */
 const BUS_LINE_STATION_LIST_URL = 'http://test.zhbuswx.com/StationList/GetStationList';
+
+const BUS_STATUS = {
+    DOCKED: '5',
+    GONE: '8'
+};

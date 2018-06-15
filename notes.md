@@ -325,3 +325,64 @@ watchedLines就是一个数组, 其中每个元素就是用户的一条关注, k
 }
 ```
 
+
+## bus-data-fetcher.js中fetchBusRealTimeData()函数返回的巴士实时数据如下
+
+key为searchKey, value是保护这条线路上所有巴士实时数据的数组
+
+```json
+{
+   "1__香洲":[
+      {
+         "busNumber":"粤C28490",
+         "currentStation":"中山亭",
+         "status":"8"
+      },
+      {
+         "busNumber":"粤C28348",
+         "currentStation":"公交临时站",
+         "status":"5"
+      },
+      {
+         "busNumber":"粤C08697D",
+         "currentStation":"前山",
+         "status":"8"
+      },
+      {
+         "busNumber":"粤C28448",
+         "currentStation":"城轨珠海站",
+         "status":"5"
+      },
+      {
+         "busNumber":"粤C28428",
+         "currentStation":"城轨珠海站",
+         "status":"5"
+      },
+      {
+         "busNumber":"粤C28438",
+         "currentStation":"城轨珠海站",
+         "status":"5"
+      }
+   ],
+   "10__城轨珠海站":[
+
+   ],
+   "2__城轨珠海站":[
+      {
+         "busNumber":"粤C28307",
+         "currentStation":"拱北口岸",
+         "status":"8"
+      },
+      {
+         "busNumber":"粤C28362",
+         "currentStation":"华侨宾馆",
+         "status":"8"
+      },
+      {
+         "busNumber":"粤C28863",
+         "currentStation":"望海楼",
+         "status":"5"
+      }
+   ]
+}
+```

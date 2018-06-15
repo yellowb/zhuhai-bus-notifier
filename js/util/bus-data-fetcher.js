@@ -45,6 +45,17 @@ function convertStationListData(wsData) {
     return stations;
 }
 
+function convertBusStatusListData(wsData) {
+    let busStatusList = _.map(wsData, function (n) {
+        return {
+            'busNumber': n['BusNumber'],
+            'currentStation': n['CurrentStation'],
+            'status': n['LastPosition']
+        }
+    });
+    return busStatusList;
+}
+
 /**
  * Fetch bus line basic info & station list by bus line#
  * @param lineNumber
@@ -112,3 +123,45 @@ function fetchBusLineData(lineNumber, callback) {
         });
 }
 
+/**
+ * Call webservice to get real time bus data for specified lines
+ * @param allQueryParams should be an array, each element should follow this structure: {id: <line number>, fromStation: <name of fromStation>}
+ * @param callback
+ */
+function fetchBusRealTimeData(allQueryParams, callback) {
+    if (_.isEmpty(allQueryParams)) {
+        return callback(null, []);
+    }
+
+    axios.all(allQueryParams.map(function (queryParam) {
+        return axios.get(BUS_REAL_TIME_STATUS_URL, {
+            params: queryParam
+        })
+            .then(function (response) {
+                if (response.status !== 200) {  // network exception
+                    throw new Error(`Error in calling webservice to get watched line ${queryParam.id}__${queryParam.fromStation} real time data. Response ${response.status} : ${response.statusText}`);
+                }
+                else {
+                    let wsData = _.get(response, 'data.data');  // Suppose it is an array, check notes.md
+                    let busStatusForOneLine = [];
+                    if (_.isArray(wsData) && wsData.length > 0) {
+                        busStatusForOneLine = convertBusStatusListData(wsData);
+                    }
+                    return Promise.resolve(busStatusForOneLine);
+                }
+            })
+    }))
+        .then(function (busStatusList) {
+            let searchKeys = allQueryParams.map(function (n) {
+                return `${n.id}__${n.fromStation}`;
+            });
+
+            // Reshape the data into k-v form, the k is searchKey, the v is corresponding busStatus
+            busStatusList = _.zipObject(searchKeys, busStatusList);
+
+            return callback(null, busStatusList);
+        })
+        .catch(function (error) {
+            return callback(error, null);
+        });
+}

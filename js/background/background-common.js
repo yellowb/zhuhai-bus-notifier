@@ -24,7 +24,24 @@ function checkBusRealTime() {
 
         // TODO use all searchKeys to call webservice and get bus real time status
 
-
+        function (result, cb) {
+            let watchLines = result.watchLines;
+            // Get lineNumber and fromStation from all watched lines.
+            let allQuertParams = _.map(_.keys(watchLines), function (searchKey) {
+                let tokens = searchKey.split('__');
+                return {
+                    id: tokens[0],  // 'id' is used as param key in query URL
+                    fromStation: tokens[1]
+                }
+            });
+            fetchBusRealTimeData(allQuertParams, function (err, busStatusList) {
+                if (err) {
+                    return cb(err, null);
+                }
+                result.busStatusList = busStatusList;
+                return cb(null, result);
+            });
+        },
 
         // TODO fetch station list for all related line
 
