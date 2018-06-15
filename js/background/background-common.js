@@ -27,6 +27,7 @@ function checkBusRealTime() {
         // TODO fetch station list for all related line
 
         // TODO use bus real time data & line's station list & user watched lines to calculate.
+        // TODO might pre-process the station list to add stationIdx(0~n) into each station.
         // The result should contains:
         // (1) How many buses are running on this line now
         // (2) If >= 1 bus running, where is the bus now? (station name + paused/gone)
