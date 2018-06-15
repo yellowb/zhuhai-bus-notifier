@@ -10,7 +10,7 @@ http://test.zhbuswx.com/RealTime/GetRealTime?id=K1&fromStation=%E5%9F%8E%E8%BD%A
     {
       "BusNumber":"粤C00983D",
       "CurrentStation":"唐家",
-      "LastPosition":"5"  // 只是表示状态, 5 = 已经离开车站, 8 = 在车站中停留
+      "LastPosition":"5"  // 只是表示状态, 8 = 已经离开车站, 5 = 在车站中停留
     },
     {
       "BusNumber":"粤C01739D",
