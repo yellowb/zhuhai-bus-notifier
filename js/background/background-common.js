@@ -5,7 +5,7 @@
  */
 function checkBusRealTime() {
     async.waterfall([
-        // Get all watched lines
+        // Get all watched lines from local storage
         function (cb) {
             getAllWatchedLines((err, result) => {
                 let lines = (_.isEmpty(result)) ? [] : result;
@@ -21,6 +21,19 @@ function checkBusRealTime() {
             }, {});
             return cb(null, result);
         },
+
+        // TODO use all searchKeys to call webservice and get bus real time status
+
+        // TODO fetch station list for all related line
+
+        // TODO use bus real time data & line's station list & user watched lines to calculate.
+        // The result should contains:
+        // (1) How many buses are running on this line now
+        // (2) If >= 1 bus running, where is the bus now? (station name + paused/gone)
+        // (3) Notification message(s) for user: "车牌号"还有"n"个站就要到达/即将到达/已到达/已到达并刚刚离开. "n" may set to <=5 temporary.
+
+
+
         function (result, cb) {
             console.log(result);
             return cb(null, result);
