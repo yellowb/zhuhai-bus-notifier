@@ -135,11 +135,14 @@ function fetchBusRealTimeData(allQueryParams, callback) {
 
     axios.all(allQueryParams.map(function (queryParam) {
         return axios.get(BUS_REAL_TIME_STATUS_URL, {
-            params: queryParam
+            params: {
+                id: queryParam.lineNumber,
+                fromStation: queryParam.fromStation
+            }
         })
             .then(function (response) {
                 if (response.status !== 200) {  // network exception
-                    throw new Error(`Error in calling webservice to get watched line ${queryParam.id}__${queryParam.fromStation} real time data. Response ${response.status} : ${response.statusText}`);
+                    throw new Error(`Error in calling webservice to get watched line ${queryParam.lineNumber}__${queryParam.fromStation} real time data. Response ${response.status} : ${response.statusText}`);
                 }
                 else {
                     let wsData = _.get(response, 'data.data');  // Suppose it is an array, check notes.md
@@ -153,7 +156,7 @@ function fetchBusRealTimeData(allQueryParams, callback) {
     }))
         .then(function (busStatusList) {
             let searchKeys = allQueryParams.map(function (n) {
-                return `${n.id}__${n.fromStation}`;
+                return `${n.lineNumber}__${n.fromStation}`;
             });
 
             // Reshape the data into k-v form, the k is searchKey, the v is corresponding busStatus

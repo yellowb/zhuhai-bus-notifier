@@ -19,22 +19,27 @@ function checkBusRealTime() {
                 (result[value.searchKey] || (result[value.searchKey] = [])).push(value);
                 return result;
             }, {});
-            return cb(null, {'watchLines': reshapedLines});
-        },
 
-        // TODO use all searchKeys to call webservice and get bus real time status
-
-        function (result, cb) {
-            let watchLines = result.watchLines;
-            // Get lineNumber and fromStation from all watched lines.
-            let allQuertParams = _.map(_.keys(watchLines), function (searchKey) {
+            // Convert the searchKeys into Objects for further use
+            let watchedLineKeys = _.map(_.keys(reshapedLines), function (searchKey) {
                 let tokens = searchKey.split('__');
                 return {
-                    id: tokens[0],  // 'id' is used as param key in query URL
+                    lineNumber: tokens[0],
                     fromStation: tokens[1]
                 }
             });
-            fetchBusRealTimeData(allQuertParams, function (err, busStatusList) {
+
+            return cb(null, {
+                'watchLines': reshapedLines,
+                'watchedLineKeys': watchedLineKeys
+            });
+        },
+
+        // TODO use all searchKeys to call webservice and get bus real time status
+        function (result, cb) {
+            let watchedLineKeys = result.watchedLineKeys;
+
+            fetchBusRealTimeData(watchedLineKeys, function (err, busStatusList) {
                 if (err) {
                     return cb(err, null);
                 }
@@ -44,6 +49,7 @@ function checkBusRealTime() {
         },
 
         // TODO fetch station list for all related line
+
 
         // TODO use bus real time data & line's station list & user watched lines to calculate.
         // TODO might pre-process the station list to add stationIdx(0~n) into each station.
