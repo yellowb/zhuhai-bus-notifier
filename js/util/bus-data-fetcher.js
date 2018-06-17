@@ -124,6 +124,17 @@ function fetchBusLineData(lineNumber, callback) {
 }
 
 /**
+ * Return a function to invoke fetchBusLineData() with lineNumber in closure.
+ * @param lineNumber
+ * @returns {Function}
+ */
+function fetchBusLineDataWrapped(lineNumber) {
+    return function (callback) {
+        fetchBusLineData(lineNumber, callback);
+    }
+}
+
+/**
  * Call webservice to get real time bus data for specified lines
  * @param allQueryParams should be an array, each element should follow this structure: {id: <line number>, fromStation: <name of fromStation>}
  * @param callback

@@ -1,6 +1,34 @@
 // Common functions used in background
 
 /**
+ * Cache for (bus lines and their station list)
+ * @type {DataCache}
+ */
+let busStationListCache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
+
+/**
+ * Fetch station list details for given line#s
+ * @param lineNumbers array to contain line#s
+ * @param callback
+ */
+function fetchRelatedBusLines(lineNumbers, callback) {
+    let functions = _.map(lineNumbers, fetchBusLineDataWrapped);  // one function for one line#
+
+    async.parallelLimit(functions, 5, function (err, results) {
+        if (err) {
+            return callback(err, null);
+        }
+        else {
+            results = _.flatten(results);
+            let keys = _.map(results, (n) => n.lineNumber + '__' + n.fromStation);
+            let stationListForAllBusLines = _.zipObject(keys, results);
+            return callback(null, stationListForAllBusLines);
+        }
+    });
+}
+
+
+/**
  * Fetch real time bus data and do checking with user's notify station setting
  */
 function checkBusRealTime() {
@@ -49,6 +77,22 @@ function checkBusRealTime() {
         },
 
         // TODO fetch station list for all related line
+        // TODO also need set/get cache
+
+        function (result, cb) {
+            let watchedLineKeys = result.watchedLineKeys;
+            let lineNumbers = _.uniq(_.map(watchedLineKeys, (n) => n.lineNumber));  // All line numbers watched
+
+            // TODO need write a new function to call fetchBusLineData(), set/get cache will be in that function
+            // TODO result object should the same to previous: {searchkey1: [stations...], ...}
+            fetchRelatedBusLines(lineNumbers, function (err, allStationList) {
+                if (err) {
+                    return cb(err, null);
+                }
+                result.allStationList = allStationList;
+                return cb(null, result);
+            });
+        },
 
 
         // TODO use bus real time data & line's station list & user watched lines to calculate.
