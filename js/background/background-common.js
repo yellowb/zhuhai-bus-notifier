@@ -19,6 +19,7 @@ function fetchRelatedBusLines(lineNumbers, callback) {
             return callback(err, null);
         }
         else {
+            // Data structure refer to notes.md
             results = _.flatten(results);
             let keys = _.map(results, (n) => n.lineNumber + '__' + n.fromStation);
             let stationListForAllBusLines = _.zipObject(keys, results);
@@ -62,8 +63,6 @@ function checkBusRealTime() {
                 'watchedLineKeys': watchedLineKeys
             });
         },
-
-        // TODO use all searchKeys to call webservice and get bus real time status
         function (result, cb) {
             let watchedLineKeys = result.watchedLineKeys;
 
@@ -82,9 +81,6 @@ function checkBusRealTime() {
         function (result, cb) {
             let watchedLineKeys = result.watchedLineKeys;
             let lineNumbers = _.uniq(_.map(watchedLineKeys, (n) => n.lineNumber));  // All line numbers watched
-
-            // TODO need write a new function to call fetchBusLineData(), set/get cache will be in that function
-            // TODO result object should the same to previous: {searchkey1: [stations...], ...}
             fetchRelatedBusLines(lineNumbers, function (err, allStationList) {
                 if (err) {
                     return cb(err, null);
