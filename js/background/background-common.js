@@ -21,6 +21,16 @@ function fetchRelatedBusLines(lineNumbers, callback) {
         else {
             // Data structure refer to notes.md
             results = _.flatten(results);
+
+            // For each station, add 'idx' field to indicate its sequence on the line
+            _.forEach(results, function(line) {
+                if(!_.isEmpty(line.stations)) {
+                    for(let i in line.stations) {
+                        line.stations[i].idx = _.toInteger(i);
+                    }
+                }
+            });
+
             let keys = _.map(results, (n) => n.lineNumber + '__' + n.fromStation);
             let stationListForAllBusLines = _.zipObject(keys, results);
             return callback(null, stationListForAllBusLines);
