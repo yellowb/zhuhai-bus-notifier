@@ -23,9 +23,9 @@ function fetchRelatedBusLines(lineNumbers, callback) {
             results = _.flatten(results);
 
             // For each station, add 'idx' field to indicate its sequence on the line
-            _.forEach(results, function(line) {
-                if(!_.isEmpty(line.stations)) {
-                    for(let i in line.stations) {
+            _.forEach(results, function (line) {
+                if (!_.isEmpty(line.stations)) {
+                    for (let i in line.stations) {
                         line.stations[i].idx = _.toInteger(i);
                     }
                 }
@@ -38,6 +38,11 @@ function fetchRelatedBusLines(lineNumbers, callback) {
     });
 }
 
+function findIndexOfStation(station, stationList) {
+    return _.findIndex(stationList, function (o) {
+        return o.name === station;
+    });
+}
 
 /**
  * Fetch real time bus data and do checking with user's notify station setting
@@ -69,7 +74,7 @@ function checkBusRealTime() {
             });
 
             return cb(null, {
-                'watchLines': reshapedLines,
+                'watchedLines': reshapedLines,
                 'watchedLineKeys': watchedLineKeys
             });
         },
@@ -100,40 +105,37 @@ function checkBusRealTime() {
             });
         },
 
+        function (result, cb) {  // Calculate the distance between notify station and each running bus
+            let watchedLines = result.watchedLines;
+            let busStatusList = result.busStatusList;
+            let allStationList = result.allStationList;
+            let calculatedResults = {};  // Contains calculated data for each watchedLine & notify station
 
-        // TODO use bus real time data & line's station list & user watched lines to calculate.
-        // TODO might pre-process the station list to add stationIdx(0~n) into each station.
-        // The result should contains:
-        // (1) How many buses are running on this line now
-        // (2) If >= 1 bus running, where is the bus now? (station name + paused/gone)
-        // (3) Notification message(s) for user: "车牌号"还有"n"个站就要到达/即将到达/已到达/已到达并刚刚离开. "n" may set to <=5 temporary.
-        //     Messages should be grouped by watched line, there may be multiple buses running on the same watched line.
-        // The data structure of entire result:
-        // {
-        //    // Grouped by watched line
-        //    "10__下栅检查站__北山村": {
-        //       "searchKey":"10__下栅检查站",
-        //       "lineNumber":"10",
-        //       "fromStation":"下栅检查站",
-        //       "toStation":"城轨珠海站",
-        //       "notifyStation":"北山村"
-        //       "notifyStationIdx": 10  // the index in the station list
-        //
-        //       // Calculation result, all buses in this line here
-        //       "buses": [
-        //          {
-        //             "busNumber":"粤C00983D",
-        //             "currentStation":"唐家",
-        //             "currentStationIdx": 7,
-        //             "status": 8  // 8 = gone, 5 = docked
-        //             // numeric, how many stations between current & notifyStation.
-        //             // positive means bus has not arrived, negative means bus gone.
-        //             "diffToNotifyStation": 3  // 10 - 7 = 3
-        //          },
-        //          {/** Another bus **/}
-        //       ]
-        //    }
-        // }
+            _.forOwn(watchedLines, function (notifyStations, searchKey) {  // one watchedLine might has multiple notify stations
+                _.forEach(notifyStations, function (notifyStation) {
+                    calculatedResults[notifyStation.key] = _.assign({}, notifyStation);  // Basic fields
+                    let calcultedNotifyObj = calculatedResults[notifyStation.key];
+
+                    let buses = _.clone(busStatusList[notifyStation.searchKey]);  // the buses running on this line
+                    calcultedNotifyObj.buses = buses;
+
+                    //calculate each station's distance to notify station
+                    let stationList = allStationList[notifyStation.searchKey].stations;
+                    let notifyStationIdx = findIndexOfStation(notifyStation.notifyStation, stationList);  // Idx for notify station.
+                    calcultedNotifyObj.notifyStationIdx = notifyStationIdx;
+                    _.forEach(buses, function (bus) {
+                        let currentStationIdx = findIndexOfStation(bus.currentStation, stationList);  // Idx for current station.
+                        bus.currentStationIdx = currentStationIdx;
+                        // Positive number means the bus has not arrived, otherwise already arrived.
+                        bus.diffToNotifyStation = notifyStationIdx - currentStationIdx;
+                    });
+                })
+            });
+            result.calculatedResults = calculatedResults;
+            return cb(null, result);
+        },
+
+        // TODO generate the notification messages
 
 
         function (result, cb) {
