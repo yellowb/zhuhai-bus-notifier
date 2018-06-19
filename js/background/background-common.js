@@ -164,14 +164,50 @@ function checkBusRealTime() {
                         // ON THE WAY status
                         bus.onTheWayStatus = getOnTheWayStatus(bus.currentStationIdx, bus.status, stationList);
                     });
-                })
+                });
             });
             result.calculatedResults = calculatedResults;
             return cb(null, result);
         },
 
-        // TODO generate the notification messages, include bus at the start station or the terminal station
+        // Generate the notifications.
+        function (result, cb) {
+            let calculatedResults = result.calculatedResults;
+            let allNotifications = [];
 
+            _.forOwn(calculatedResults, function (calculatedObj, key) {
+                let buses = calculatedObj.buses;
+                let notifications = [];
+
+                _.forEach(buses, function (bus) {
+                    // If the bus's position to notify station is less/equal to THRESHOLD, should notify user.
+                    if (bus.diffToNotifyStation <= NOTIFY_THRESHOLD && bus.diffToNotifyStation >= 0) {
+                        let notification = _.assign({
+                            'fromStation': calculatedObj.fromStation,
+                            'lineNumber': calculatedObj.lineNumber,
+                            'notifyStation': calculatedObj.notifyStation,
+                            'toStation': calculatedObj.toStation
+                        }, bus);
+                        if (bus.diffToNotifyStation === 0) {
+                            if (bus.status === BUS_ACTIVITY_STATUS.DOCKED) {
+                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达你的关注站点 ${bus.currentStation}`;
+                            }
+                            else {
+                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已离开你的关注站点 ${bus.currentStation}`;
+                            }
+                        }
+                        else {
+                            notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站到达你的关注站点 ${notification.notifyStation}`;
+                        }
+                        notifications.push(notification);
+                        allNotifications.push(notification);
+                    }
+                });
+                calculatedObj.notifications = notifications;
+            });
+            result.allNotifications = allNotifications;
+            return cb(null, result);
+        },
 
         function (result, cb) {
             console.log(result);
