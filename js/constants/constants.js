@@ -49,4 +49,4 @@ const BUS_ON_THE_WAY_STATUS = {
  * The threshold which how many stations remaining that system should start to notify user
  * @type {number}
  */
-const NOTIFY_THRESHOLD = 3;
+const NOTIFY_THRESHOLD = 5;
