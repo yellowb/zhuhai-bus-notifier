@@ -16,6 +16,7 @@ setInterval(function () {
 
 function refreshBusesRealTimeData(calculatedResults) {
     $('#buses-real-time-data').html(entireAccordionTemplate(calculatedResults));
+    //TODO also refresh the latest update time
 }
 
 
