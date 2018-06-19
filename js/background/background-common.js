@@ -135,7 +135,7 @@ function checkBusRealTime() {
             return cb(null, result);
         },
 
-        // TODO generate the notification messages
+        // TODO generate the notification messages, include bus at the start station or the terminal station
 
 
         function (result, cb) {
