@@ -38,11 +38,40 @@ function fetchRelatedBusLines(lineNumbers, callback) {
     });
 }
 
+/**
+ * Return the index of a given station within a list of stations.
+ * @param station
+ * @param stationList
+ * @returns {number | module:../index.LoDashExplicitWrapper<number> | _.LodashFindIndex1x2<any> | *}
+ */
 function findIndexOfStation(station, stationList) {
     return _.findIndex(stationList, function (o) {
         return o.name === station;
     });
 }
+
+/**
+ * Return the ON THE WAY status of the bus. Can be: 'Ready for departure'/'on the way'/'arrived at terminal'
+ * @param currentStationIdx
+ * @param status
+ * @param stationList
+ */
+function getOnTheWayStatus(currentStationIdx, status, stationList) {
+    let stationAmount = stationList.length;
+    if (currentStationIdx === 0) {
+        if (status === BUS_ACTIVITY_STATUS.DOCKED) {
+            // Bus at the start station and have not gone yet
+            return BUS_ON_THE_WAY_STATUS.READY_FOR_DEPARTURE;
+        }
+    }
+    if (currentStationIdx === stationAmount - 1) {
+        // Bus arrived the terminal station, not matter docked or gone
+        return BUS_ON_THE_WAY_STATUS.ARRIVED_TERMINAL;
+    }
+    // Bus is on the way
+    return BUS_ON_THE_WAY_STATUS.ON_THE_WAY;
+}
+
 
 /**
  * Fetch real time bus data and do checking with user's notify station setting
@@ -112,7 +141,8 @@ function checkBusRealTime() {
             let watchedLines = result.watchedLines;
             let busStatusList = result.busStatusList;
             let allStationList = result.allStationList;
-            let calculatedResults = {};  // Contains calculated data for each watchedLine & notify station
+            // Contains calculated data for each watchedLine & notify station. Data structure refer to notes.md.
+            let calculatedResults = {};
 
             _.forOwn(watchedLines, function (notifyStations, searchKey) {  // one watchedLine might has multiple notify stations
                 _.forEach(notifyStations, function (notifyStation) {
@@ -131,6 +161,8 @@ function checkBusRealTime() {
                         bus.currentStationIdx = currentStationIdx;
                         // Positive number means the bus has not arrived, otherwise already arrived.
                         bus.diffToNotifyStation = notifyStationIdx - currentStationIdx;
+                        // ON THE WAY status
+                        bus.onTheWayStatus = getOnTheWayStatus(bus.currentStationIdx, bus.status, stationList);
                     });
                 })
             });
