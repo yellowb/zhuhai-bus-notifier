@@ -78,6 +78,7 @@ function checkBusRealTime() {
                 'watchedLineKeys': watchedLineKeys
             });
         },
+        // Get bus real time status for all watched lines.
         function (result, cb) {
             let watchedLineKeys = result.watchedLineKeys;
 
@@ -93,6 +94,7 @@ function checkBusRealTime() {
         // TODO fetch station list for all related line
         // TODO also need set/get cache
 
+        // Get bus station list for all watched lines.
         function (result, cb) {
             let watchedLineKeys = result.watchedLineKeys;
             let lineNumbers = _.uniq(_.map(watchedLineKeys, (n) => n.lineNumber));  // All line numbers watched
@@ -105,7 +107,8 @@ function checkBusRealTime() {
             });
         },
 
-        function (result, cb) {  // Calculate the distance between notify station and each running bus
+        // Use above data to do calculation. Typically, calculate the distance between notify station and each running bus
+        function (result, cb) {
             let watchedLines = result.watchedLines;
             let busStatusList = result.busStatusList;
             let allStationList = result.allStationList;
@@ -113,16 +116,16 @@ function checkBusRealTime() {
 
             _.forOwn(watchedLines, function (notifyStations, searchKey) {  // one watchedLine might has multiple notify stations
                 _.forEach(notifyStations, function (notifyStation) {
-                    calculatedResults[notifyStation.key] = _.assign({}, notifyStation);  // Basic fields
-                    let calcultedNotifyObj = calculatedResults[notifyStation.key];
+                    let calculatedObj = _.assign({}, notifyStation);  // Basic fields
+                    calculatedResults[notifyStation.key] = calculatedObj;
 
                     let buses = _.clone(busStatusList[notifyStation.searchKey]);  // the buses running on this line
-                    calcultedNotifyObj.buses = buses;
+                    calculatedObj.buses = buses;
 
                     //calculate each station's distance to notify station
                     let stationList = allStationList[notifyStation.searchKey].stations;
                     let notifyStationIdx = findIndexOfStation(notifyStation.notifyStation, stationList);  // Idx for notify station.
-                    calcultedNotifyObj.notifyStationIdx = notifyStationIdx;
+                    calculatedObj.notifyStationIdx = notifyStationIdx;
                     _.forEach(buses, function (bus) {
                         let currentStationIdx = findIndexOfStation(bus.currentStation, stationList);  // Idx for current station.
                         bus.currentStationIdx = currentStationIdx;
