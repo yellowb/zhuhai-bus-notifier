@@ -1,5 +1,8 @@
 # Useful URLs
 
+## Offical website for query bus information
+http://test.zhbuswx.com/BusLine/BusQuery.html#/
+
 ## Get all latest bus status by line# and head station
 http://test.zhbuswx.com/RealTime/GetRealTime?id=K1&fromStation=%E5%9F%8E%E8%BD%A8%E7%8F%A0%E6%B5%B7%E5%8C%97%E7%AB%99
 
@@ -392,7 +395,7 @@ key为searchKey, value是保护这条线路上所有巴士实时数据的数组
 
 ```json
 {
-   "watchLines":{
+   "watchedLines":{
       "1__香洲":[
          {
             "fromStation":"香洲",
@@ -503,14 +506,17 @@ key为searchKey, value是保护这条线路上所有巴士实时数据的数组
          "stations":[
             {
                "uuid":"09d3df05b61d4b57959762d9ed2f986c",
+               "idx":0,
                "name":"香洲"
             },
             {
                "uuid":"986531bc5af04121a7a5bbbf27854cfb",
+               "idx":1,
                "name":"南坑"
             },
             {
                "uuid":"83372752a25d4bbcbce138cfaf59bf31",
+               "idx":2,
                "name":"城轨珠海站"
             }
          ]
@@ -523,14 +529,17 @@ key为searchKey, value是保护这条线路上所有巴士实时数据的数组
          "stations":[
             {
                "uuid":"83372752a25d4bbcbce138cfaf59bf31",
+               "idx":0,
                "name":"城轨珠海站"
             },
             {
                "uuid":"3dd7a19e5f8c44ea8b69f84f508727bb",
+               "idx":1,
                "name":"拱北口岸"
             },
             {
                "uuid":"759cac0a7aed47aca0e7daf21e23c44e",
+               "idx":2,
                "name":"香洲"
             }
          ]
@@ -543,14 +552,17 @@ key为searchKey, value是保护这条线路上所有巴士实时数据的数组
          "stations":[
             {
                "uuid":"83372752a25d4bbcbce138cfaf59bf31",
+               "idx":0,
                "name":"城轨珠海站"
             },
             {
                "uuid":"3dd7a19e5f8c44ea8b69f84f508727bb",
+               "idx":1,
                "name":"拱北口岸"
             },
             {
                "uuid":"759cac0a7aed47aca0e7daf21e23c44e",
+               "idx":2,
                "name":"香洲"
             }
          ]
@@ -563,14 +575,17 @@ key为searchKey, value是保护这条线路上所有巴士实时数据的数组
          "stations":[
             {
                "uuid":"09d3df05b61d4b57959762d9ed2f986c",
+               "idx":0,
                "name":"香洲"
             },
             {
                "uuid":"37e0f37540d342cc8c37746c6fcd207a",
+               "idx":1,
                "name":"为农市场"
             },
             {
                "uuid":"83372752a25d4bbcbce138cfaf59bf31",
+               "idx":2,
                "name":"城轨珠海站"
             }
          ]
@@ -583,14 +598,17 @@ key为searchKey, value是保护这条线路上所有巴士实时数据的数组
          "stations":[
             {
                "uuid":"6443ef8c7b3b4b858d3397a33403d2b5",
+               "idx":0,
                "name":"金鼎工业园"
             },
             {
                "uuid":"bea8d4ed60c644d0bfe9fd47a0793dd9",
+               "idx":1,
                "name":"宏利药业"
             },
             {
                "uuid":"962ee8ffd4224cc3ba52a6721f82635d",
+               "idx":2,
                "name":"九洲港"
             }
          ]
@@ -603,18 +621,82 @@ key为searchKey, value是保护这条线路上所有巴士实时数据的数组
          "stations":[
             {
                "uuid":"d8b2dc9ad1964bc8801e62c56c620a21",
+               "idx":0,
                "name":"九洲港"
             },
             {
                "uuid":"bcc09604537f4f3dbcf2ad45f55049b8",
+               "idx":1,
                "name":"石花东"
             },
             {
                "uuid":"c0e111a3f0b34161a2a7238bee606013",
+               "idx":2,
                "name":"金鼎工业园"
             }
          ]
       }
+   }
+}
+```
+
+## 结合三者信息计算出来的一条线路上的notify station的calculated result结构为
+
+```json
+{
+   "1__香洲__中山亭":{
+      "fromStation":"香洲",
+      "key":"1__香洲__中山亭",
+      "lineNumber":"1",
+      "lineUuid":"c72cd82b-be2f-4879-a4a2-f4c05ecf54fd",
+      "notifyStation":"中山亭",
+      "notifyStationIdx":15,
+      "searchKey":"1__香洲",
+      "toStation":"城轨珠海站",
+      "buses":[
+         {
+            "busNumber":"粤C07890D",
+            "currentStation":"桃园新村",
+            "status":"5",
+            "currentStationIdx":2,
+            "diffToNotifyStation":13
+         },
+         {
+            "busNumber":"粤C07889D",
+            "currentStation":"安居园",
+            "status":"8",
+            "currentStationIdx":8,
+            "diffToNotifyStation":7
+         },
+         {
+            "busNumber":"粤C07882D",
+            "currentStation":"招商花园城南",
+            "status":"8",
+            "currentStationIdx":13,
+            "diffToNotifyStation":2
+         },
+         {
+            "busNumber":"粤C07765D",
+            "currentStation":"前山",
+            "status":"8",
+            "currentStationIdx":18,
+            "diffToNotifyStation":-3
+         },
+         {
+            "busNumber":"粤C28343",
+            "currentStation":"前山",
+            "status":"8",
+            "currentStationIdx":18,
+            "diffToNotifyStation":-3
+         },
+         {
+            "busNumber":"粤C07725D",
+            "currentStation":"拱北",
+            "status":"8",
+            "currentStationIdx":23,
+            "diffToNotifyStation":-8
+         }
+      ]
    }
 }
 ```
