@@ -30,6 +30,7 @@
       "js/util/bus-data-fetcher.js",
       "js/util/data-cache.js",
       "js/util/local-storage-helper.js",
+      "js/background/popup-listener.js",
       "js/background/background-common.js",
       "js/background/background-entry.js"
     ],

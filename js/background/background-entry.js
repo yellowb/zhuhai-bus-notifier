@@ -28,3 +28,12 @@ setInterval(function () {
     // TODO trigger bus real time checking
     checkBusRealTime();
 }, INTERVAL_OF_CHECK_BUS);
+
+// Listener for popup.js
+chrome.extension.onConnect.addListener(function(port) {
+    console.log('[Popup.js] connected.');
+    port.onMessage.addListener(function(msg) {
+        console.log(`[Popup.js] received msg: ${msg}`);
+        // port.postMessage(getLastNotifications());
+    });
+})

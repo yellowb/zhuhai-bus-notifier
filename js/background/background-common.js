@@ -217,7 +217,7 @@ function checkBusRealTime(callback) {
                 calculatedObj.notifications = notifications;
             });
             result.allNotifications = allNotifications;
-            // New notifications found in current interval.
+            // New notifications found in current interval. These are used to popup to alarm user.
             result.newNotifications = _.differenceWith(allNotifications, lastNotifications, _.isEqual);
             lastNotifications = allNotifications;
             return cb(null, result);
