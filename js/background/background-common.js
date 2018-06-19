@@ -7,6 +7,12 @@
 let busStationListCache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
 
 /**
+ * Notifications generated at last interval
+ * @type {Array}
+ */
+let lastNotifications = [];
+
+/**
  * Fetch station list details for given line#s
  * @param lineNumbers array to contain line#s
  * @param callback
@@ -76,7 +82,7 @@ function getOnTheWayStatus(currentStationIdx, status, stationList) {
 /**
  * Fetch real time bus data and do checking with user's notify station setting
  */
-function checkBusRealTime() {
+function checkBusRealTime(callback) {
     async.waterfall([
         // Get all watched lines from local storage
         function (cb) {
@@ -197,7 +203,12 @@ function checkBusRealTime() {
                             }
                         }
                         else {
-                            notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站到达你的关注站点 ${notification.notifyStation}`;
+                            if (bus.status === BUS_ACTIVITY_STATUS.DOCKED) {
+                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站到达你的关注站点 ${notification.notifyStation}`;
+                            }
+                            else {
+                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已离开站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站到达你的关注站点 ${notification.notifyStation}`;
+                            }
                         }
                         notifications.push(notification);
                         allNotifications.push(notification);
@@ -206,14 +217,22 @@ function checkBusRealTime() {
                 calculatedObj.notifications = notifications;
             });
             result.allNotifications = allNotifications;
+            // New notifications found in current interval.
+            result.newNotifications = _.differenceWith(allNotifications, lastNotifications, _.isEqual);
+            lastNotifications = allNotifications;
             return cb(null, result);
         },
-
+        // print the result for debug
         function (result, cb) {
             console.log(result);
             return cb(null, result);
         }
     ], function (err, result) {
-
+        if (err) {
+            console.error(err);
+        }
+        if (_.isFunction(callback)) {
+            return callback(err, result);
+        }
     });
 }
