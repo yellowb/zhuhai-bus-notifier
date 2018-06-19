@@ -12,6 +12,8 @@ let busStationListCache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
  */
 let lastNotifications = [];
 
+let latestCalculatedResults = {};
+
 /**
  * Fetch station list details for given line#s
  * @param lineNumbers array to contain line#s
@@ -173,6 +175,7 @@ function checkBusRealTime(callback) {
                 });
             });
             result.calculatedResults = calculatedResults;
+            latestCalculatedResults = calculatedResults;
             return cb(null, result);
         },
 

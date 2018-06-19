@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<div class="ui raised fluid segments" style="width: 400px;">
+<div class="ui raised fluid segments" style="width: 500px;">
     <!-- header -->
     <div class="ui segment">
         <h4 class="ui aligned left header">
@@ -35,84 +35,10 @@
 
     <!-- real time buses data for all watched lines -->
     <div class="ui segment">
-        <div class="ui styled fluid accordion">
-            <div class="active title">
-                <i class="dropdown icon"></i>
-                <a class="ui teal circular large label">K1&nbsp;&nbsp;&nbsp;珠海城轨站&nbsp;->&nbsp;香洲总站</a>
-                &nbsp;4辆正在行驶
-            </div>
-            <div class="active content">
+        <div id="buses-real-time-data" class="ui styled fluid accordion">
 
-                <div class="ui selection divided list">
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            <!-- Bus real time data here -->
 
-            <div class="active title">
-                <i class="dropdown icon"></i>
-                <a class="ui teal circular large label">K1&nbsp;&nbsp;&nbsp;珠海城轨站&nbsp;->&nbsp;香洲总站</a>
-                &nbsp;4辆正在行驶
-            </div>
-            <div class="active content">
-
-                <div class="ui selection divided list">
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                    <a class="item">
-                        <i class="bus icon orange"></i>
-                        <div class="content">
-                            <div class="header">粤C99999D - 南方软件园</div>
-                            <div class="description">距离 <strong>中山大学</strong> 还有 <strong>2</strong> 个站</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -123,6 +49,9 @@
 <script src="../js/lib/jquery-3.3.1.min.js"></script>
 <script src="../js/lib/semantic.min.js"></script>
 <script src="../js/lib/lodash.min.js"></script>
+<script src="../js/constants/constants.js"></script>
+<script src="../js/popup/popup-common.js"></script>
 <script src="../js/popup/popup-entry.js"></script>
+<script src="../js/popup/popup-msg-handler.js"></script>
 </body>
 </html>
