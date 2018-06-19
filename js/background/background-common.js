@@ -149,7 +149,7 @@ function checkBusRealTime() {
                     let calculatedObj = _.assign({}, notifyStation);  // Basic fields
                     calculatedResults[notifyStation.key] = calculatedObj;
 
-                    let buses = _.clone(busStatusList[notifyStation.searchKey]);  // the buses running on this line
+                    let buses = _.cloneDeep(busStatusList[notifyStation.searchKey]);  // the buses running on this line
                     calculatedObj.buses = buses;
 
                     //calculate each station's distance to notify station

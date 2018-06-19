@@ -26,7 +26,27 @@ const BUS_LINE_INFO_URL = 'http://test.zhbuswx.com/Handlers/BusQuery.ashx';
  */
 const BUS_LINE_STATION_LIST_URL = 'http://test.zhbuswx.com/StationList/GetStationList';
 
-const BUS_STATUS = {
-    DOCKED: '5',
-    GONE: '8'
+/**
+ * The status of a running bus.(the numbers are the same as what webservice returned)
+ * @type {{DOCKED: string, GONE: string}}
+ */
+const BUS_ACTIVITY_STATUS = {
+    DOCKED: '5',  // Docked at a station
+    GONE: '8' // Departure from a station but not yet arrive next station
 };
+
+/**
+ * The status of a bus on a line
+ * @type {{READY_FOR_DEPARTURE: string, ON_THE_WAY: string, ARRIVED_TERMINAL: string}}
+ */
+const BUS_ON_THE_WAY_STATUS = {
+    READY_FOR_DEPARTURE: 'READY_FOR_DEPARTURE',  // The bus is ready to kick-off
+    ON_THE_WAY: 'ON_THE_WAY',  // The bus is running on its line
+    ARRIVED_TERMINAL: 'ARRIVED_TERMINAL',  // The bus has arrived the terminal
+};
+
+/**
+ * The threshold which how many stations remaining that system should start to notify user
+ * @type {number}
+ */
+const NOTIFY_THRESHOLD = 3;
