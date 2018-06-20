@@ -1,3 +1,8 @@
+/**
+ * Build the entire accordion html
+ * @param calculatedResults
+ * @returns {string}
+ */
 function entireAccordionTemplate(calculatedResults) {
     let html = ``;
     _.forOwn(calculatedResults, function (line) {
@@ -13,8 +18,13 @@ function entireAccordionTemplate(calculatedResults) {
  * @returns {string}
  */
 function accordionItemTemplate(line) {
+    let active = '';
+    if(line.buses.length === 0) {  // expand it if there is at least one bus running.
+        active = 'active';
+    }
+
     let html =
-        `<div class="active title">
+        `<div class="${active} title">
                 <i class="dropdown icon"></i>
                 <a class="ui teal circular large label">${line.lineNumber}&nbsp;&nbsp;&nbsp;${line.fromStation}&nbsp;->&nbsp;${line.toStation}&nbsp;&nbsp;&nbsp;<i class="bell icon"></i>${line.notifyStation}</a>
                 &nbsp;${line.buses.length}辆车
@@ -22,10 +32,6 @@ function accordionItemTemplate(line) {
             <div class="active content">
 
                 <div class="ui selection divided list">`;
-
-    if(line.buses.length === 0) {
-        html = html.replace('active', '');
-    }
 
     _.forEach(line.buses, function (bus) {
         html += busItemTemplate(bus, line.notifyStation);
@@ -47,23 +53,50 @@ function accordionItemTemplate(line) {
 function busItemTemplate(bus, notifyStation) {
 
     let diffToNotifyStation = bus.diffToNotifyStation;
+    let busIconColor = '';
+    let busIconTooltip = '';
+
+    // Set the bus icon color
+    if (diffToNotifyStation > 0) {
+        busIconColor = 'green';
+        busIconTooltip = '巴士还没到达提醒站点';
+    }
+    else if (diffToNotifyStation === 0) {
+        busIconColor = 'red';
+        busIconTooltip = '巴士已到达提醒站点';
+    }
+    else {
+        busIconColor = 'grey';
+        busIconTooltip = '巴士已离开提醒站点';
+    }
 
     let html = `<a class="item">
-                        <i class="bus icon orange"></i>
+                        <i title="${busIconTooltip}" class="bus icon ${busIconColor}"></i>
                         <div class="content">
                             <div class="header">${bus.busNumber} - ${bus.currentStation}</div>`;
 
-    //TODO 结合 ON_THE_WAY 提示更多信息
-
-    if (diffToNotifyStation > 0) {
-        html += `<div class="description">距离 <strong>${notifyStation}</strong> 还有 <strong>${diffToNotifyStation}</strong> 个站</div>`;
+    // The bus is ready to departure
+    if(bus.onTheWayStatus === BUS_ON_THE_WAY_STATUS.READY_FOR_DEPARTURE) {
+        html += `<div class="description">始发站待发, 距离 <strong>${notifyStation}</strong> 还有 <strong>${diffToNotifyStation}</strong> 个站</div>`;
     }
-    else if (diffToNotifyStation === 0) {
-        html += `<div class="description">已到达 <strong>${notifyStation}</strong> </div>`;
+    // The bus arrived terminal
+    else if(bus.onTheWayStatus === BUS_ON_THE_WAY_STATUS.ARRIVED_TERMINAL) {
+        html += `<div class="description">已到达终点站</div>`;
     }
+    // The bus is on the way
     else {
-        html += `<div class="description">已驶离 <strong>${notifyStation}</strong> </div>`;
+        if (diffToNotifyStation > 0) {
+            html += `<div class="description">距离 <strong>${notifyStation}</strong> 还有 <strong>${diffToNotifyStation}</strong> 个站</div>`;
+        }
+        else if (diffToNotifyStation === 0) {
+            html += `<div class="description">已到达 <strong>${notifyStation}</strong> </div>`;
+        }
+        else {
+            html += `<div class="description">已驶离 <strong>${notifyStation}</strong> </div>`;
+        }
     }
+
+
 
     html += `</div></a>`;
     return html;

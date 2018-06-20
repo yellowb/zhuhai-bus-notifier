@@ -1,3 +1,7 @@
+
+const GET_BUS_REALTIME_DATA = 'Get.BusRealTimeData';
+const GET_META_DATA = 'Get.MetaData';
+
 let port = chrome.extension.connect({
     name: "Sample Communication"
 });
@@ -8,11 +12,16 @@ port.onMessage.addListener(function (msg) {
 });
 
 // Init data when opening popup
-port.postMessage("Get.BusRealTimeData");
+requestBackgroudForData();
 
 setInterval(function () {
-    port.postMessage("Get.BusRealTimeData");
+    requestBackgroudForData()
 }, INTERVAL_OF_CHECK_BUS);
+
+function requestBackgroudForData() {
+    port.postMessage(GET_BUS_REALTIME_DATA);
+    // port.postMessage(GET_META_DATA);
+}
 
 function refreshBusesRealTimeData(calculatedResults) {
     $('#buses-real-time-data').html(entireAccordionTemplate(calculatedResults));

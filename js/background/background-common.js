@@ -13,6 +13,7 @@ let busStationListCache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
 let lastNotifications = [];
 
 let latestCalculatedResults = {};
+let latestMetaData = {};
 
 /**
  * Fetch station list details for given line#s
@@ -223,6 +224,7 @@ function checkBusRealTime(callback) {
             // New notifications found in current interval. These are used to popup to alarm user.
             result.newNotifications = _.differenceWith(allNotifications, lastNotifications, _.isEqual);
             lastNotifications = allNotifications;
+            latestMetaData = (new Date()).getTime();
             return cb(null, result);
         },
         // print the result for debug
