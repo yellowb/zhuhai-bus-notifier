@@ -7,3 +7,7 @@ $('.ui.accordion')
     })
 ;
 
+// Settings button
+$('#settings-link').on('click', function () {
+    window.open(chrome.runtime.getURL('views/options.html'));
+});
