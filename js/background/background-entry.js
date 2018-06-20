@@ -21,11 +21,33 @@ function initStorage() {
 chrome.runtime.onInstalled.addListener(() => {
     console.log(`${APP_NAME} is installed.`);
     initStorage();
+    initFlags();
 });
+
+function initFlags() {
+    chrome.storage.local.get(KEY_FOR_FLAGS, function (result) {
+        // Check if the extension is just installed.
+        if (_.isEmpty(result)) {
+            setFlags(true, true, true);
+            console.log(`No flags found in local storage. All set to true.`);
+        }
+        else {
+            let flags = result[KEY_FOR_FLAGS];
+            setFlags(flags.executionFlag, flags.alarmFlag, false);
+            console.log(`Flags found in local storage: ${JSON.stringify(result)}`);
+        }
+    });
+}
+
+
 
 // Set persistence <- true in manifest.json to ensure it keeps running in background.
 setInterval(function () {
-    // TODO trigger bus real time checking
+    if(!executionFlag) {
+        console.log(`executionFlag is false. No need to execute.`);
+        return;
+    }
+    // trigger bus real time checking
     checkBusRealTime();
 }, INTERVAL_OF_CHECK_BUS);
 
@@ -36,4 +58,4 @@ chrome.extension.onConnect.addListener(function(port) {
         console.log(`[Popup.js] received msg: ${msg}`);
         port.postMessage(handlePopupRequest(msg));
     });
-})
+});

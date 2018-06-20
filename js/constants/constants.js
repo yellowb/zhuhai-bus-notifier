@@ -1,12 +1,13 @@
 const APP_NAME = 'ZhuHai Bus Notifier';
 
 const KEY_FOR_WATCHED_LINES = 'watchedLines';
+const KEY_FOR_FLAGS = 'flags';
 
 /**
  * Interval of checking bus real time data
  * @type {number}
  */
-const INTERVAL_OF_CHECK_BUS = 30 * 1000;
+const INTERVAL_OF_CHECK_BUS = 10 * 1000;
 
 /**
  * URL to get bus real time status
@@ -57,7 +58,9 @@ const NOTIFY_THRESHOLD = 5;
  */
 const REQ = {
     GET_BUS_REALTIME_DATA: 'Get.BusRealTimeData',
-    GET_META_DATA: 'Get.MetaData'
+    GET_META_DATA: 'Get.MetaData',
+    GET_FLAGS: 'Get.Flags',
+    SET_FLAGS: 'Set.Flags'
 };
 
 /**
@@ -66,7 +69,8 @@ const REQ = {
  */
 const RESP = {
     RETURN_BUS_REALTIME_DATA: 'Return.BusRealTimeData',
-    RETURN_META_DATA: 'Return.MetaData'
+    RETURN_META_DATA: 'Return.MetaData',
+    RETURN_FLAGS: 'Return.Flags'
 };
 
 const DISPLAY_DATE_FORMAT = 'YYYY年MM月DD日 HH:mm:ss';

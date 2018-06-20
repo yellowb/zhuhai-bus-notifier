@@ -1,6 +1,17 @@
 // Common functions used in background
 
 /**
+ * Switch for loop to fetch latest bus data
+ * @type {boolean}
+ */
+let executionFlag = true;
+/**
+ * Switch for alarm user on new notifications
+ * @type {boolean}
+ */
+let alarmFlag = true;
+
+/**
  * Cache for (bus lines and their station list)
  * @type {DataCache}
  */
@@ -12,6 +23,7 @@ let busStationListCache = new DataCache(24 * 60 * 60 * 1000);  // TTL = 1 day
  */
 let lastNotifications = [];
 
+// Data post to popup
 let latestCalculatedResults = {};
 let latestMetaData = {};
 
@@ -240,4 +252,19 @@ function checkBusRealTime(callback) {
             return callback(err, result);
         }
     });
+}
+
+function setFlags(_executionFlag, _alarmFlag, syncToLocalStorage) {
+    executionFlag = _executionFlag;
+    alarmFlag = _alarmFlag;
+
+    if(syncToLocalStorage) {
+        let flags = {};
+        flags[KEY_FOR_FLAGS] = {
+            executionFlag: _executionFlag,
+            alarmFlag: _alarmFlag
+        };
+        chrome.storage.local.set(flags);
+        console.log(`New flags ${JSON.stringify(flags)} sync to local storage.`);
+    }
 }
