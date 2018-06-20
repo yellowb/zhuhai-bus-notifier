@@ -39,7 +39,15 @@ function handleBackgroundResponse(response) {
 
 // Refresh the accordion with latest bus real time data.
 function refreshBusesRealTimeData(calculatedResults) {
-    $('#buses-real-time-data').html(entireAccordionTemplate(calculatedResults));
+    if(_.isEmpty(calculatedResults)) {
+        $('#reminder-segment').show();
+        $('#buses-real-time-data-segment').hide();
+    }
+    else {
+        $('#reminder-segment').hide();
+        $('#buses-real-time-data').html(entireAccordionTemplate(calculatedResults));
+        $('#buses-real-time-data-segment').show();
+    }
 }
 
 // Refresh other meta data.
@@ -78,7 +86,7 @@ $('input:checkbox').change(function () {
     // Auto refresh UI data
     setInterval(function () {
         requestBackgroundForData()
-    }, INTERVAL_OF_CHECK_BUS);
+    }, INTERVAL_OF_CHECK_BUS / 2);
 })();
 
 

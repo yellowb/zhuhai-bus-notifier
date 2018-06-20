@@ -55,7 +55,7 @@ setInterval(function () {
         // alarm notifications if needed.
         function (result, cb) {
             if (!alarmFlag) {
-                console.log(`alarmFlag is false. No need to execute.`);
+                console.log(`alarmFlag is false. No need to alarm user.`);
                 return cb(null);
             }
             else {

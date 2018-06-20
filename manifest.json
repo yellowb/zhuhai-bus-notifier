@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "ZhuHai Bus Notifier",
+  "name": "ZhuHai Bus Arrival Notifier",
   "version": "0.0.1",
   "description": "珠海公交到站提醒器",
   "homepage_url": "https://github.com/yellowb/zhuhai-bus-notifier",
