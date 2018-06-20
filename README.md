@@ -33,3 +33,28 @@ Step5：确认安装：
 Step6：成功：
 
 [![](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/5-complete.png)](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/5-complete.png)
+
+## 使用方法
+Step1：第一次使用时，由于还没有添加任何线路，所以数据是空的，可以点击**插件Icon**，在弹出页面右上角点击**设置**按钮进入设置界面：
+
+[![](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/6-setup.png)](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/6-setup.png)
+
+Step2：依次填写和选择线路名称、线路方向、提醒站点，点击保存：
+
+[![](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/7-add-line.png)](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/7-add-line.png)
+
+Step3：在我的关注页面里可以管理已经关注的线路，删除不想再关注的：
+
+[![](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/8-mgr-line.png)](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/8-mgr-line.png)
+
+Step4：设置完成！之后程序会定时（暂时是20s一次）抓取公交数据，并结合你关注的线路和站点做计算，在需要时提醒你。
+
+如果想查看线路上车子的实时情况，可以点击浏览器右上角Icon，在这里你也可以暂停插件的运行或禁止右下角通知的弹出：
+
+[![](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/9-show-bus-real-time.png)](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/9-show-bus-real-time.png)
+
+右下角通知Sample如下，用的是chrome的notification：
+
+[![](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/10-notification-show-bus.png)](https://github.com/yellowb/zhuhai-bus-notifier/raw/guide/guide-photos/10-notification-show-bus.png)
+
+## Enjoy it！
