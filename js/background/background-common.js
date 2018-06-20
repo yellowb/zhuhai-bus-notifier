@@ -1,6 +1,12 @@
 // Common functions used in background
 
 /**
+ * the url to icon used in notification
+ * @type {string}
+ */
+const NOTI_ICON_URL = chrome.extension.getURL("images/icon128.png");
+
+/**
  * Switch for loop to fetch latest bus data
  * @type {boolean}
  */
@@ -212,18 +218,18 @@ function checkBusRealTime(callback) {
                         }, bus);
                         if (bus.diffToNotifyStation === 0) {
                             if (bus.status === BUS_ACTIVITY_STATUS.DOCKED) {
-                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达你的关注站点 ${bus.currentStation}`;
+                                notification.msg = `已到达关注站点 ${bus.currentStation}`;
                             }
                             else {
-                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已离开你的关注站点 ${bus.currentStation}`;
+                                notification.msg = `已离开关注站点 ${bus.currentStation}`;
                             }
                         }
                         else {
                             if (bus.status === BUS_ACTIVITY_STATUS.DOCKED) {
-                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站将要到达 ${notification.notifyStation}`;
+                                notification.msg = `已到达 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站将要到达 ${notification.notifyStation}`;
                             }
                             else {
-                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已离开站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站将要到达 ${notification.notifyStation}`;
+                                notification.msg = `已离开 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站将要到达 ${notification.notifyStation}`;
                             }
                         }
                         notifications.push(notification);
@@ -259,7 +265,7 @@ function setFlags(_executionFlag, _alarmFlag, syncToLocalStorage) {
     executionFlag = _executionFlag;
     alarmFlag = _alarmFlag;
 
-    if(syncToLocalStorage) {
+    if (syncToLocalStorage) {
         let flags = {};
         flags[KEY_FOR_FLAGS] = {
             executionFlag: _executionFlag,
@@ -269,3 +275,46 @@ function setFlags(_executionFlag, _alarmFlag, syncToLocalStorage) {
         console.log(`New flags ${JSON.stringify(flags)} sync to local storage.`);
     }
 }
+
+/**
+ * Popup notification to alarm user.
+ * @param newNotifications
+ * @param callback
+ * @returns {*}
+ */
+function alarmNotifications(newNotifications, callback) {
+    if (!_.isArray(newNotifications) || _.isEmpty(newNotifications)) {
+        return callback(null);
+    }
+    else {
+        // Group by watched line first
+        let groupedNotifications = _.groupBy(newNotifications, function (n) {
+            return `${n.lineNumber} - ${n.fromStation} - ${n.notifyStation}`;
+        });
+
+        // For each watched line popup one notification
+        _.forOwn(groupedNotifications, function (lineNotifications, key) {
+            let items = _.map(lineNotifications, function (n) {
+                return {
+                    title: n.busNumber,
+                    message: n.msg
+                }
+            });
+
+            let opt = {
+                iconUrl: NOTI_ICON_URL,
+                type: 'list',
+                title: key,
+                message: '此关注线路上有新动态',
+                priority: 1,
+                items: items
+            };
+            chrome.notifications.create(key, opt, function () {
+                console.log(`Notification popup for ${key}`);
+            });
+        });
+
+        return callback(null);
+    }
+}
+
