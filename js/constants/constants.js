@@ -50,3 +50,23 @@ const BUS_ON_THE_WAY_STATUS = {
  * @type {number}
  */
 const NOTIFY_THRESHOLD = 5;
+
+/**
+ * Message sent from popup to background
+ * @type {{GET_BUS_REALTIME_DATA: string, GET_META_DATA: string}}
+ */
+const REQ = {
+    GET_BUS_REALTIME_DATA: 'Get.BusRealTimeData',
+    GET_META_DATA: 'Get.MetaData'
+};
+
+/**
+ * Response key from background
+ * @type {{RETURN_BUS_REALTIME_DATA: string, RETURN_META_DATA: string}}
+ */
+const RESP = {
+    RETURN_BUS_REALTIME_DATA: 'Return.BusRealTimeData',
+    RETURN_META_DATA: 'Return.MetaData'
+};
+
+const DISPLAY_DATE_FORMAT = 'YYYY年MM月DD日 HH:mm:ss';

@@ -1,32 +1,59 @@
-
-const GET_BUS_REALTIME_DATA = 'Get.BusRealTimeData';
-const GET_META_DATA = 'Get.MetaData';
-
 let port = chrome.extension.connect({
     name: "Sample Communication"
 });
 port.onMessage.addListener(function (msg) {
     console.log(`[Background.js] received msg: ${msg}`);
     let response = JSON.parse(msg);
-    refreshBusesRealTimeData(response);
+    handleBackgroundResponse(response);
 });
 
 // Init data when opening popup
-requestBackgroudForData();
+requestBackgroundForData();
 
+// Auto refresh UI data
 setInterval(function () {
-    requestBackgroudForData()
+    requestBackgroundForData()
 }, INTERVAL_OF_CHECK_BUS);
 
-function requestBackgroudForData() {
-    port.postMessage(GET_BUS_REALTIME_DATA);
-    // port.postMessage(GET_META_DATA);
+// Sent msgs to background for data.
+function requestBackgroundForData() {
+    port.postMessage(REQ.GET_BUS_REALTIME_DATA);
+    port.postMessage(REQ.GET_META_DATA);
 }
 
+// Handler for response from background.
+function handleBackgroundResponse(response) {
+    if (_.isEmpty(response)) {
+        return;
+    }
+    switch (response.respKey) {
+        case RESP.RETURN_BUS_REALTIME_DATA: {
+            refreshBusesRealTimeData(response.data);
+            break;
+        }
+        case RESP.RETURN_META_DATA: {
+            refreshMetaData(response.data);
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+// Refresh the accordion with latest bus real time data.
 function refreshBusesRealTimeData(calculatedResults) {
     $('#buses-real-time-data').html(entireAccordionTemplate(calculatedResults));
-    //TODO also refresh the latest update time
 }
 
+// Refresh other meta data.
+function refreshMetaData(metaData) {
+    if (!(_.isUndefined(metaData.lastUpdateTime) || _.isNull(metaData.lastUpdateTime))) {
+        let lastUpdateTimeStr = moment(metaData.lastUpdateTime).format(DISPLAY_DATE_FORMAT);
+        $('#last-update-time-label').html(`最后更新于: ${lastUpdateTimeStr}`);
+    }
+    else {
+        $('#last-update-time-label').html('');
+    }
+}
 
 
