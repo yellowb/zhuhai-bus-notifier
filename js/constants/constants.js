@@ -75,14 +75,4 @@ const RESP = {
 
 const DISPLAY_DATE_FORMAT = 'YYYY年MM月DD日 HH:mm:ss';
 
-/**
- * sound effect when notification popup
- * @type {HTMLAudioElement}
- */
-const NOTI_SOUND = new Audio(chrome.extension.getURL("sound/notification.ogg"));
 
-/**
- * the url to icon used in notification
- * @type {string}
- */
-const NOTI_ICON_URL = chrome.extension.getURL("images/icon128.png");

@@ -1,6 +1,4 @@
 
-
-
 // Active accordion
 $('.ui.accordion')
     .accordion({

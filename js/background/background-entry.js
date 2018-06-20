@@ -40,44 +40,43 @@ function initFlags() {
 }
 
 
-
 // Set persistence <- true in manifest.json to ensure it keeps running in background.
 setInterval(function () {
-    if(!executionFlag) {
+    if (!executionFlag) {
         console.log(`executionFlag is false. No need to execute.`);
         return;
     }
-    // trigger bus real time checking
-    checkBusRealTime();
+
+    async.waterfall([
+        // trigger bus real time checking
+        function (cb) {
+            return checkBusRealTime(cb);
+        },
+        // alarm notifications if needed.
+        function (result, cb) {
+            if (!alarmFlag) {
+                console.log(`alarmFlag is false. No need to execute.`);
+                return cb(null);
+            }
+            else {
+                return alarmNotifications(result.newNotifications, cb);
+            }
+        }
+    ], function (err, result) {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log('A full round has been done!');
+        }
+    });
 }, INTERVAL_OF_CHECK_BUS);
 
 // Listener for popup.js
-chrome.extension.onConnect.addListener(function(port) {
+chrome.extension.onConnect.addListener(function (port) {
     console.log('[Popup.js] connected.');
-    port.onMessage.addListener(function(msg) {
+    port.onMessage.addListener(function (msg) {
         console.log(`[Popup.js] received msg: ${msg}`);
         port.postMessage(handlePopupRequest(msg));
     });
 });
 
-
-
-
-
-
-
-
-// let opt = {
-//     iconUrl: chrome.extension.getURL("images/icon128.png"),
-//     type: 'list',
-//     title: 'Primary Title'+ (counter++),
-//     message: 'Primary message to display',
-//     priority: 1,
-//     items: [{ title: 'Item1', message: 'This is item 1.'},
-//         { title: 'Item2', message: 'This is item 2.'},
-//         { title: 'Item3', message: 'This is item 3.'}]
-// };
-// chrome.notifications.create('notify' , opt, function() { console.log('created!'); });
-//
-//
-// yourSound.play();
