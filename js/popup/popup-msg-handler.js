@@ -17,8 +17,9 @@ setInterval(function () {
 
 // Sent msgs to background for data.
 function requestBackgroundForData() {
-    port.postMessage(REQ.GET_BUS_REALTIME_DATA);
-    port.postMessage(REQ.GET_META_DATA);
+    port.postMessage(JSON.stringify({reqKey: REQ.GET_BUS_REALTIME_DATA}));
+    port.postMessage(JSON.stringify({reqKey: REQ.GET_META_DATA}));
+    port.postMessage(JSON.stringify({reqKey: REQ.GET_FLAGS}));
 }
 
 // Handler for response from background.
@@ -33,6 +34,10 @@ function handleBackgroundResponse(response) {
         }
         case RESP.RETURN_META_DATA: {
             refreshMetaData(response.data);
+            break;
+        }
+        case RESP.RETURN_FLAGS: {
+            refreshFlags(response.data);
             break;
         }
         default:
@@ -56,4 +61,19 @@ function refreshMetaData(metaData) {
     }
 }
 
+function refreshFlags(flags) {
+    $('#execution-switch').prop('checked', flags.executionFlag);
+    $('#alarm-switch').prop('checked', flags.alarmFlag);
+}
 
+// Listener for switches
+$('input:checkbox').change(function () {
+    let flags = {
+        executionFlag: $('#execution-switch').is(":checked"),
+        alarmFlag: $('#alarm-switch').is(":checked")
+    };
+    // Sync to background
+    port.postMessage(JSON.stringify({
+        reqKey: REQ.SET_FLAGS, data: flags
+    }));
+});
