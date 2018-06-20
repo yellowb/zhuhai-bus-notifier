@@ -7,14 +7,6 @@ port.onMessage.addListener(function (msg) {
     handleBackgroundResponse(response);
 });
 
-// Init data when opening popup
-requestBackgroundForData();
-
-// Auto refresh UI data
-setInterval(function () {
-    requestBackgroundForData()
-}, INTERVAL_OF_CHECK_BUS);
-
 // Sent msgs to background for data.
 function requestBackgroundForData() {
     port.postMessage(JSON.stringify({reqKey: REQ.GET_BUS_REALTIME_DATA}));
@@ -77,3 +69,16 @@ $('input:checkbox').change(function () {
         reqKey: REQ.SET_FLAGS, data: flags
     }));
 });
+
+// Startup!
+(function (){
+    // Init data when opening popup
+    requestBackgroundForData();
+
+    // Auto refresh UI data
+    setInterval(function () {
+        requestBackgroundForData()
+    }, INTERVAL_OF_CHECK_BUS);
+})();
+
+
