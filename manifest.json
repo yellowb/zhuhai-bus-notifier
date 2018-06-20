@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "ZhuHai Bus Notifier",
-  "version": "1.0.0",
-  "description": "珠海巴士到站提醒器",
+  "version": "0.0.1",
+  "description": "珠海公交到站提醒器",
   "homepage_url": "https://github.com/yellowb/zhuhai-bus-notifier",
   "icons": {
     "16": "images/icon16.png",
@@ -17,7 +17,7 @@
       "48": "images/icon48.png",
       "128": "images/icon128.png"
     },
-    "default_title": "珠海巴士到站提醒器",
+    "default_title": "珠海公交到站提醒器",
     "default_popup": "views/popup.html"
   },
   "background": {

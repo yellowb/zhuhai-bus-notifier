@@ -7,7 +7,7 @@ const KEY_FOR_FLAGS = 'flags';
  * Interval of checking bus real time data
  * @type {number}
  */
-const INTERVAL_OF_CHECK_BUS = 10 * 1000;
+const INTERVAL_OF_CHECK_BUS = 20 * 1000;
 
 /**
  * URL to get bus real time status
@@ -50,7 +50,7 @@ const BUS_ON_THE_WAY_STATUS = {
  * The threshold which how many stations remaining that system should start to notify user
  * @type {number}
  */
-const NOTIFY_THRESHOLD = 5;
+const NOTIFY_THRESHOLD = 3;
 
 /**
  * Message sent from popup to background
@@ -74,3 +74,15 @@ const RESP = {
 };
 
 const DISPLAY_DATE_FORMAT = 'YYYY年MM月DD日 HH:mm:ss';
+
+/**
+ * sound effect when notification popup
+ * @type {HTMLAudioElement}
+ */
+const NOTI_SOUND = new Audio(chrome.extension.getURL("sound/notification.ogg"));
+
+/**
+ * the url to icon used in notification
+ * @type {string}
+ */
+const NOTI_ICON_URL = chrome.extension.getURL("images/icon128.png");

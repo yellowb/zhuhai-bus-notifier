@@ -220,10 +220,10 @@ function checkBusRealTime(callback) {
                         }
                         else {
                             if (bus.status === BUS_ACTIVITY_STATUS.DOCKED) {
-                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站到达你的关注站点 ${notification.notifyStation}`;
+                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已到达站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站将要到达 ${notification.notifyStation}`;
                             }
                             else {
-                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已离开站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站到达你的关注站点 ${notification.notifyStation}`;
+                                notification.msg = `${notification.lineNumber}路(${bus.busNumber}) 已离开站点 ${bus.currentStation}, 还有 ${bus.diffToNotifyStation} 站将要到达 ${notification.notifyStation}`;
                             }
                         }
                         notifications.push(notification);
@@ -234,6 +234,7 @@ function checkBusRealTime(callback) {
             });
             result.allNotifications = allNotifications;
             // New notifications found in current interval. These are used to popup to alarm user.
+            // Compared to last round notifications, the same notifications will not alarm user.
             result.newNotifications = _.differenceWith(allNotifications, lastNotifications, _.isEqual);
             lastNotifications = allNotifications;
             latestMetaData.lastUpdateTime = (new Date()).getTime();

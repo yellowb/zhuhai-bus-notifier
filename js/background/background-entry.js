@@ -59,3 +59,25 @@ chrome.extension.onConnect.addListener(function(port) {
         port.postMessage(handlePopupRequest(msg));
     });
 });
+
+
+
+
+
+
+
+
+// let opt = {
+//     iconUrl: chrome.extension.getURL("images/icon128.png"),
+//     type: 'list',
+//     title: 'Primary Title'+ (counter++),
+//     message: 'Primary message to display',
+//     priority: 1,
+//     items: [{ title: 'Item1', message: 'This is item 1.'},
+//         { title: 'Item2', message: 'This is item 2.'},
+//         { title: 'Item3', message: 'This is item 3.'}]
+// };
+// chrome.notifications.create('notify' , opt, function() { console.log('created!'); });
+//
+//
+// yourSound.play();
