@@ -8,26 +8,36 @@
 
 <body>
 <div class="ui raised fluid segments" style="width: 500px;">
+
     <!-- header -->
-    <div class="ui segment">
-        <h4 class="ui aligned left header">
-            <img class="ui image" src="../images/icon48.png">
-            <div class="content">
-                巴士实时信息
-                <div id="last-update-time-label" class="sub header"><!-- Last update time here --></div>
+    <div class="ui grid">
+        <!-- Menu on the left -->
+        <div class="ten wide fluid column" style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px">
+            <h4 class="ui aligned left header">
+                <img class="ui image" src="../images/icon48.png">
+                <div class="content">
+                    公交实时信息
+                    <div id="last-update-time-label" class="sub header"><!-- Last update time here --></div>
+                </div>
+            </h4>
+        </div>
+        <div class="five wide column fluid right aligned"
+             style="margin-top: 10px; margin-bottom: 10px;  margin-left: 10px">
+            <div class="circular ui icon button" data-tooltip="点此添加你的路线" data-position="bottom right" data-inverted="">
+                <i id="settings-link" class="setting icon"></i>
             </div>
-        </h4>
+        </div>
     </div>
 
-    <!-- switches: notification popup / refresh button / last update time / link to setup page -->
 
+    <!-- switches: notification popup / refresh button / last update time / link to setup page -->
     <div class="ui segment">
-        <div class="ui toggle checkbox">
+        <div class="ui toggle checkbox" data-tooltip="插件的总开关, 打开后插件才会定时刷新数据" data-position="right center" data-inverted="">
             <input id="execution-switch" type="checkbox" checked=checked>
             <label>插件开关</label>
         </div>
         <div class="ui divider hidden"></div>
-        <div class="ui toggle checkbox">
+        <div class="ui toggle checkbox" data-tooltip="控制是否弹出右下角通知的开关" data-position="right center" data-inverted="">
             <input id="alarm-switch" type="checkbox" checked=checked>
             <label>弹出式通知开关</label>
         </div>
@@ -41,7 +51,6 @@
 
         </div>
     </div>
-
 
 
 </div>
