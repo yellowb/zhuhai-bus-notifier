@@ -57,9 +57,13 @@ function busItemTemplate(bus, notifyStation) {
     let busIconTooltip = '';
 
     // Set the bus icon color
-    if (diffToNotifyStation > 0) {
+    if (diffToNotifyStation > NOTIFY_THRESHOLD) {
         busIconColor = 'green';
         busIconTooltip = '巴士还没到达提醒站点';
+    }
+    else if (diffToNotifyStation <= NOTIFY_THRESHOLD && diffToNotifyStation > 0) {
+        busIconColor = 'orange';
+        busIconTooltip = '巴士即将到达提醒站点';
     }
     else if (diffToNotifyStation === 0) {
         busIconColor = 'red';
