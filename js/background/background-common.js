@@ -289,7 +289,7 @@ function alarmNotifications(newNotifications, callback) {
     else {
         // Group by watched line first
         let groupedNotifications = _.groupBy(newNotifications, function (n) {
-            return `${n.lineNumber} - ${n.fromStation} - ${n.notifyStation}`;
+            return `${n.lineNumber}路 - ${n.fromStation} - ${n.notifyStation}`;
         });
 
         // For each watched line popup one notification

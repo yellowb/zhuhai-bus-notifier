@@ -26,7 +26,7 @@ function accordionItemTemplate(line) {
     let html =
         `<div class="${active} title">
                 <i class="dropdown icon"></i>
-                <a class="ui teal circular large label">${line.lineNumber}&nbsp;&nbsp;&nbsp;${line.fromStation}&nbsp;->&nbsp;${line.toStation}&nbsp;&nbsp;&nbsp;<i class="bell icon"></i>${line.notifyStation}</a>
+                <a class="ui teal circular large label">${line.lineNumber}路&nbsp;&nbsp;&nbsp;${line.fromStation}&nbsp;->&nbsp;${line.toStation}&nbsp;&nbsp;&nbsp;<i class="bell icon"></i>${line.notifyStation}</a>
                 &nbsp;${line.buses.length}辆车
             </div>
             <div class="active content">
