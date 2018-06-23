@@ -6,6 +6,6 @@ https://stackoverflow.com/questions/14858909/cannot-get-chrome-popup-js-to-use-c
 
 https://stackoverflow.com/questions/17601615/the-chrome-extension-popup-is-not-working-click-events-are-not-handled
 
-# play sound when popup notification
+# play sound when popup notifications
 
 https://stackoverflow.com/questions/14917531/how-to-implement-a-notification-popup-with-sound-in-chrome-extension
